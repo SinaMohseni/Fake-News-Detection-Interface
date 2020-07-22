@@ -1,0 +1,61 @@
+extends ../layout
+  
+block content
+  link(href='/style/study.css', rel="stylesheet", type='text/css')  
+  script(src="/js/browseTopics.js")
+  
+  script.          
+    let taskRun = !{JSON.stringify(taskRun)};
+    const selectedTopics = !{JSON.stringify(selectedTopics)};
+    
+  include topbar.pug  
+  
+  #mainContent
+    h4.sub-header(style="line-height: 48px;") All Selected Articles
+    
+    div.top-buttons(style='text-align: center')     
+      
+      //a.butt.side-butt(href="/study") Browse Available News Stories
+      
+      #completeButton.butt.side-butt.complete-butt.hidden(onclick="attemptToFinish()") Complete task and submit your selections
+                
+      div #{taskRun.completionText}
+      br
+      div #{study.completionInfo}
+
+    #feedList
+      each topic in selectedTopics
+        -var articleCount = topic.selected_articles.length
+        .topic-row(data-id=topic._id)
+          .left-line(data-claim=topic.claim_id)
+          .topic-top-row
+            .circle(data-claim=topic.claim_id)
+              img(src='/img/baseline-search-24px.svg')
+              p.lil-circle-text ? of ?
+            .topic-points
+              span.points= topic.editorial_score
+              span.under-label Reader Score
+            .topic-info
+              h3= topic.claim
+            .topic-buttons
+              a.read.butt(href='/study/topic/'+topic.claim_id) Explore Story
+          
+          .topic-articles.selected
+            h4 Selected Articles
+            each article in topic.selected_articles
+              div.article-box(style='opacity: 1;')      
+                .left
+                  h3= article.title
+                  div.domain
+                    | By:
+                    img(src="http://www.google.com/s2/favicons?domain="+article.domain)
+                    div= article.domain
+                .right
+                  div.read.btn.btn-outline-secondary(onclick="inspectArticle(event)", data-article_id=article._id data-topic_id=topic.claim_id) Inspect
+                                    
+                  div.choose.btn.btn-outline-danger(onclick="removeArticle(event)", data-article_id=article._id, style="margin-top: 8px;") Remove
+
+
+    div.top-buttons(style='text-align: center')     
+      a.butt.side-butt(href="/study") Browse Available News Stories
+  script init()

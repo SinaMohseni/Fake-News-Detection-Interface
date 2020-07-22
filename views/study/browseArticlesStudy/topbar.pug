@@ -1,0 +1,15 @@
+#topBar  
+  img#logo(src='/img/news.png')
+  a.button.big-butt(href='/study') News Stories
+  inline |
+  a.button.big-butt(href='/feed') Your Articles
+  inline |
+  div#progess(style="display:inline; padding: 16px;") Score: 
+    #taskRunScore(style="display:inline;") #{taskRun.score}
+  inline |
+  div#progess(style="display:inline; padding: 16px;")  
+    #taskRunCompletion(style="display:inline;") #{taskRun.completionText}
+  
+  //div(style="float:right; font-family: monospace") Debug -     
+    div Pariticipant ID #{taskRun.participant_id}
+    a.button(href='/clearStudy') Clear Study

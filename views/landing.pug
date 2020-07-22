@@ -1,0 +1,51 @@
+//- ----- Page 1: This is initial page  ----- 
+
+extends layout
+
+block moreHead
+  script(src="js/landing.js")
+  //link( rel="stylesheet", href='/style/landing.css')
+  
+block content
+
+  #topBar(style="box-shadow: 0px -2px 8px 2px #4a4a53;")
+    .centered
+      img#logo(src='/img/news.png')
+      h1 X-Fake News
+
+  #mainContent(style="padding: 0px")
+    link(href='/style/landing.css', rel="stylesheet", type='text/css')
+    
+    #bigImg(style="background: black; position: relative;")
+      img.big-background-img(src='/img/administration-articles-bank-261949.jpg')
+      .header-on-img
+        h1 Explainable Fake News Detection
+        //- p some more text about it
+        
+      //- .img-on-img
+         img(src='/img/models.png')
+    
+    div(style="margin-top: 36px;")
+      a.study-choice(href="/generalinfo")
+        div.left-line 
+        div.label
+          h3 More Info
+      
+      a.study-choice(href="/begin/trueNewsSelectionStudy")
+        div.left-line 
+        div.label
+          h3 Demo
+      a.study-choice(href="/studies")
+        div.left-line 
+        div.label
+          h3 Studies     
+    
+    nav.navbar.navbar-light.nav-fill
+      span.navbar-brand.mb-0.h1 Navbar
+    
+    
+    //h1
+      img#logo(src='/img/news.png' style='height: 6vw;')
+      div#apparatusName(style='display: inline-block;') The X-Fake News
+
+  #footer This is a research prototype developed at Texas A&M.

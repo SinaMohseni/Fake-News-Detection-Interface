@@ -1,0 +1,10 @@
+{
+  "uid": "xai_study_demo",
+  "id": "XAI Study Demo",
+  "append": true,
+  "watch": true,
+  "script": "cross-env NODE_ENV=dev node node_modules/nodemon/bin/nodemon.js  app.js",
+  "sourceDir": "./",
+  "workingDir": "./",
+  "command": "node"
+}

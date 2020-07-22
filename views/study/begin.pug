@@ -1,0 +1,253 @@
+//- ----- Page 5: This is the instruction page  ----- 
+
+extends ../layout
+
+block moreHead
+  script.
+    const taskRun = !{JSON.stringify(taskRun)};
+    const studyType = !{JSON.stringify(studyType)};
+    
+    function init() {
+      if(studyType == "curatorStudy") {
+        show('.curator')
+      } else if(studyType == "trueNewsSelectionStudy") {
+        show('.trueNewsSelectionStudy')
+      } else if(studyType == "fakeNewsSelectionStudy") {
+        show('.curator')
+      }
+      //-  //- else if(studyType == "allAvailable") {
+      //-   show('.allAvailable')
+      //- } else if(studyType == "bestStudy") {
+      //-   show('.best')
+      //- } else if(studyType == "pickyEditor") {
+      //-   show('.picky')
+      //- }
+        
+      
+      if(taskRun.condition_order[taskRun.current_condition] == 'no-ai') {      // noAI condition
+        show('.lvl-0')
+      }
+      if(taskRun.condition_order[taskRun.current_condition] == 'ai') {     // AI condition
+        show('.lvl-1')
+      }      
+      if(taskRun.condition_order[taskRun.current_condition] == 'attribute') {     // XAI: attention
+        show('.lvl-2')
+      }      
+      if(taskRun.condition_order[taskRun.current_condition] == 'attention') {     // XAI: attribute
+        show('.lvl-3')
+      }
+      if(taskRun.condition_order[taskRun.current_condition] == 'expert') {     // XAI: attention+attribute
+        show('.lvl-4')
+      }       
+    }
+
+block content    
+  .container(style="padding:32px;")
+    
+    
+    .trueNewsSelectionStudy.hidden
+      h1.big-header True News Selection 
+    
+      h3 Instructions
+
+      .lvl-0.lvl-1.lvl-2.lvl-3.lvl-4.hidden(style="text-align: center;")
+        div(style="text-align: left;")
+          p 
+            | You will be shown a series of news stories to help us in 
+            b sharing True News headlines 
+            | in a social media.
+          p 
+            | 1- News stories are 
+            b gathered from social media 
+            | platform. 
+        img.tutorial-img(src="/img/tutorialScreens/news_story.png" style="text-align: center;")
+        p
+        div(style="text-align: left;")
+          p 
+            | 2- For each story, we found some 
+            b related news articles using Google News search 
+            | but we aren't sure which are true or false articles for representing the story.
+        img.tutorial-img(src="/img/tutorialScreens/news_article.png" style="text-align: center;")
+        p
+        div(style="text-align: left;")
+          p  
+            | Inspect the headlines and their articles to:
+          p 
+            | 3- Click on 
+            b Share This Story 
+            | if the news story is True.
+          p
+            | 4- Click on 
+            b Report Fake News 
+            | if the the news story is Fake.
+          p 
+            | 5- Click on 
+            b Skip to Next 
+            | if you are not sure about the veracity of this story.
+
+        img.tutorial-img(src="/img/tutorialScreens/select_news.png" style="text-align: center;")
+        p
+        div(style="text-align: left;")
+          p
+            b Note: 
+            | You need to 
+            b select at least one article 
+            | before you can share the news headline.
+
+      
+    //- hr  
+    
+    h1.big-header
+    h3 Interface:
+    p 
+      | We have developed an interface 
+      | to help you 
+      b find the most true news stories 
+      |.
+
+    h5 News Story Page
+    //- p On the news story page (first page), you will be shown a headline for the news story and a list of the relevant articles below it.
+    //- p
+    //-   | We have built an 
+    //-   b AI Fake News Detector 
+    //-   | to help you find the True and Fake News.
+
+    .lvl-0.hidden(style="text-align: center;")
+      img.tutorial-img(src="/img/tutorialScreens/basic_newsStory.png")
+
+    .lvl-1.hidden(style="text-align: center;")
+      div(style="text-align: left;")
+        p
+          | We have built an 
+          b AI Fake News Detector 
+          | to help you find the True and Fake News.
+        p 
+          | 6- You can click the dropdown to see the 
+          b AI prediction for this story headline 
+          | on whether it is true or fake.
+        p 
+          | 7-  Click to see 
+          b prediction confidence on Inputs 
+          | that go into the AI prediction. 
+      img.tutorial-img(src="/img/tutorialScreens/attr_newsStory.png" style="text-align: center;")
+        
+    .lvl-2.hidden(style="text-align: center;")
+      div(style="text-align: left;")
+        p
+          | We have built an 
+          b AI Fake News Detector 
+          | to help you find the True and Fake News.
+        p
+          | 6- Click to see the 
+          b AI prediction 
+          | for this story headline.
+        p 
+          | 7-  Click to see 
+          b prediction confidence 
+          | for different inputs that go into the AI prediction. 
+
+      img.tutorial-img(src="/img/tutorialScreens/attr_newsStory.png" style="text-align: center;")
+        
+    .lvl-3.lvl-4.hidden(style="text-align: center;")
+      div(style="text-align: left;")
+        p
+          | We have built an 
+          b AI Fake News Detector 
+          | to help you find the True and Fake News.
+        p
+          | 6- Click to see the 
+          b AI prediction 
+          | for this story headline.
+        p 
+          | 7-  Click to see 
+          b prediction confidence 
+          | for different inputs that go into the AI prediction. 
+        p 
+          | 8- Click to see 
+          b key words in headline 
+          | that AI used in this prediction. 
+
+      img.tutorial-img(src="/img/tutorialScreens/expert_newsStory.png")
+      
+    .lvl-2.hidden(style="text-align: center;")
+      div(style="text-align: left;")
+        p 
+          | For each of the related articles, you will see: 
+        p 
+          | 8- This 
+          b Article's importance 
+          | for AI prediction compared to other articles.
+        p 
+          | 9- Explanations of this article's 
+          b source, content, and headline importance 
+          | for this prediction.
+      img.tutorial-img(src="/img/tutorialScreens/attr_newsArticleBox.png")
+
+    .lvl-4.hidden(style="text-align: center;")
+      p
+      div(style="text-align: left;")
+        p 
+          | For each of the related articles, you will see: 
+        p 
+          | 9- This 
+          b Article's importance 
+          | for AI prediction compared to other articles.
+        p 
+          | 10- Explanations of this article's 
+          b source, content, and headline importance 
+          | for this prediction.
+
+      img.tutorial-img(src="/img/tutorialScreens/expert_newsArticleBox.png")
+
+    hr  
+    h5 News Article Page  
+    p 
+      | You can click 
+      b 'Inspect' 
+      | on each articles box to open the news articles.
+
+    .lvl-0.lvl-1.hidden(style="text-align: center;")      
+      img.tutorial-img(src="/img/tutorialScreens/basic_article.png")
+
+    .lvl-3.hidden(style="text-align: center;")
+      div(style="text-align: left;")
+        p 
+        | 10- Click to see 
+        b key words in article 
+        | that go into the AI prediction. 
+
+      img.tutorial-img(src="/img/tutorialScreens/attn_articleWords.png")
+
+    .lvl-2.hidden(style="text-align: center;")
+      div(style="text-align: left;")
+        p 
+        | 9- Click to see 
+        b top 3 sentences in article 
+        | that AI used for its prediction. 
+      img.tutorial-img(src="/img/tutorialScreens/attr_topSentence.png")
+
+    .lvl-4.hidden(style="text-align: center;")
+      div(style="text-align: left;")
+        p 
+        | 11- Click to see 
+        b key words in article 
+        | that AI used for its prediction.
+      img.tutorial-img(src="/img/tutorialScreens/expert_articleWords.png")
+
+    .lvl-4.hidden(style="text-align: center;")
+      div(style="text-align: left;")
+        p 
+        | 12- Click to see 
+        b top 3 sentences in the article 
+        | that AI used for its prediction. 
+      img.tutorial-img(src="/img/tutorialScreens/expert_topSentence.png")
+
+    .best.hidden    
+    .curator.hidden                  
+    .allAvailable.hidden      
+    .picky.hidden
+    
+    .centered
+      a.btn.btn-primary(href="/study" style="font-size:20px; margin: 24px; text-align: center;") Begin
+
+  script init()

@@ -1,0 +1,165 @@
+extends ../layout
+
+block moreHead
+  script(src="/js/exploreTopic.js")
+  link(href='/style/study.css', rel="stylesheet", type='text/css') 
+  
+block content  
+  //-link(href='/style/landing.css', rel="stylesheet", type='text/css')  
+  script.      
+    const TOPICDATA = !{JSON.stringify(topic)};
+    const taskRun = !{JSON.stringify(taskRun)};
+    
+  include topbar.pug   
+  
+  include popupSurvey.pug   
+
+  #mainContent.container(style="background: white;")
+    
+    a.mini-nav(href='/study/') Back to Available News Stories
+      img(src='/img/baseline-arrow_back_ios-24px.svg')
+        
+    h2(style="text-align: center; font-weight:lighter; margin-top: 32px;") News Story
+      
+    div.claim
+      h2#claimHeader.highlight-off #{topic.claim}
+      
+      div.explainies
+        #claimWords.explainable.lvl-two.toggle-butt.off.hidden(onclick="toggleClaimWords();" style='flex: 0.8;')
+          .header
+            div.left-switch
+              label.switch
+                input#claimWordsSwitch(type="checkbox")
+                span.slider.round
+            div.right-label  Show key words in the story's title
+            
+        #claimPrediction.explainable.lvl-one.closed.toggle-butt.hidden(onclick="toggleClaimPrediction();" style="border-radius: 4px;")
+          .header
+            .label Our guess for this story's credibility
+            .right-icon
+              img(src="/img/baseline-keyboard_arrow_down-24px.svg")
+            
+          .content
+            p We think that this news story is:
+              #predicitonText.true-false-text #{topic.prediction}
+        #claimConfidences.explainable.lvl-three.closed.toggle-butt.hidden(onclick="toggleClaimConfidences();" style="border-radius: 4px;")
+          .header
+            .label How we came up with our guess?
+            .right-icon
+              img(src="/img/baseline-keyboard_arrow_down-24px.svg")
+          .content
+            p We are 
+              span.fancy-number #{topic.confidences.overall} 
+              |  sure that this news story is #{topic.prediction} 
+            div There are a few factors which go into our guess:
+            .model-confidence Related articles :  
+              span.fancy-number #{topic.confidences.model_1}
+            .model-confidence Story's origin : 
+              span.fancy-number #{topic.confidences.model_2}
+            .model-confidence Story's information : 
+              span.fancy-number #{topic.confidences.model_3}
+            .model-confidence Magic :
+              span.fancy-number #{topic.confidences.model_4}          
+            
+        
+    // div.cred
+      span Credibility
+      p #{topic.credibility}
+      
+    // div.origins
+      span Origins
+      p.maybe-too-big #{topic.origins}
+
+    //div.last-updated
+      span Last Updated
+      p #{topic.last_updated}
+              
+    // div.links
+      span Referred Links
+      each link in topic.referred_links
+        a(target='_blank' href=link)= link
+      
+    // div.tags
+      span Tags
+      each tag in topic.tags
+        p= tag
+      
+    // div.snopes-link
+      a(target='_blank' href=topic.url) Snopes Page
+      
+    // div.articles
+      span Article Count
+      p #{topic.articles.length}
+    
+    -var articleCount = topic.articles.length
+    
+    .centered
+      h3.sub-header(style="text-align:center;") #{topic.articles.length} Articles
+        span Please choose the best article to represent this news story.
+    
+    #articleList
+      each article in topic.articles
+        div.article-box(style='opacity: 0;')        
+          h3= article.title
+          div.domain
+            | By:
+            img(src="http://www.google.com/s2/favicons?domain="+article.domain)
+            div= article.domain
+          // div.link-type
+            span Link Type
+            p= article.link_type
+          //div.link
+            span Link
+            p= article.
+          //div.number Relevance       
+            div.relevanceScore.lil-box 58%
+          //div.number Source Credibility     
+            div.sourceCredibilityScore.lil-box 16%
+            
+          .article-explainable.hidden.lvl-two.closed(data-articleId=article._id data-explainable='article relevance' onclick="toggleExplainable(event);")
+            .header
+              .label How relevant is the article?
+              .right-icon
+                img(src='/img/baseline-arrow_forward_ios-24px.svg')
+            .content
+              .centerer
+                .lil-box.fancy-number= article.importance.claim
+                .number-description.article-relevance relevant
+              
+          .article-explainable.hidden.lvl-two.closed(data-articleId=article._id data-explainable='article quality' onclick="toggleExplainable(event);")
+            .header 
+              .label Is the article high quality?
+              .right-icon
+                img(src='/img/baseline-arrow_forward_ios-24px.svg')
+            .content
+              .centerer
+                .lil-box.fancy-number= article.importance.article
+                .number-description.article-importance quality
+                
+          .article-explainable.hidden.lvl-one.closed(data-articleId=article._id data-explainable='source credibility' onclick="toggleExplainable(event);")
+            .header
+              .label How credible is the source?
+              .right-icon
+                img(src='/img/baseline-arrow_forward_ios-24px.svg')
+            .content              
+              .centerer
+                .lil-box.fancy-number= article.importance.article_source
+                .number-description.source-credibility credibility
+              
+          .article-explainable.hidden.lvl-one.closed(data-articleId=article._id data-explainable='source relevance' onclick="toggleExplainable(event);")
+            .header
+              .label How relevant is the source to this news story?
+              .right-icon
+                img(src='/img/baseline-arrow_forward_ios-24px.svg')
+            .content
+              .centerer
+                .lil-box.fancy-number= article.importance.claim_source
+                .number-description.source-relevance relevant
+              
+                        
+          .button-row
+            div.read.btn.btn-outline-secondary(onclick="inspectArticle(event)", data-article_id=article._id) Inspect
+                              
+            div.choose.btn.btn-outline-success(onclick="chooseArticle(event)", data-article_id=article._id, style="float: right;") Select
+        
+    script init()

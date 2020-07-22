@@ -1,0 +1,82 @@
+//- ----- Page 7: This is the Article Inspect page  ----- 
+
+extends ../../layout
+  
+block moreHead
+  script(src="/js/Actions.js")
+  script(src="/js/Visuals.js")
+  script(src="/js/CuratorArticlePage.js")
+  link(href='/style/study.css', rel="stylesheet", type='text/css')  
+  script(src="https://d3js.org/d3.v3.min.js")
+
+block content
+  
+  script.      
+    const TOPICDATA = !{JSON.stringify(topic)};
+    const articleDATA = !{JSON.stringify(article)};
+    const taskRun = !{JSON.stringify(taskRun)};
+        
+  #mainContent.container(style="background: white; margin-top:0px;")
+    
+    a.mini-nav(href='/study/topic/'+topic.claim_id) Back to the Story
+      img(src='/img/baseline-arrow_back_ios-24px.svg')
+        
+    h4(style="text-align: center; font-weight:lighter; margin-top: 32px;") News Article
+    
+    #articleTop
+      h2#title.article-title.highlight-off #{article.title}
+    
+      div.domain
+        | By:
+        img(src="http://www.google.com/s2/favicons?domain="+article.domain)
+        div= article.domain
+      
+
+    p   
+    div.explainies    
+      div.importances
+            
+        .article-explainable.articleRel.hidden.lvl-three.lvl-four.large-info.closed(data-articleId=article._id art_imp_tot = article.article_relevance art_imp_clm= article.importance.claim article_imp = article.importance.article claim_source_imp = article.importance.claim_source article_source = article.importance.article_source data-explainable='article relevance' onclick="Visuals.showPie(event);")
+              .header
+                .label 
+                  i 
+                    b Click to see explanations for article importance:
+                .right-icon
+                  img(src='/img/baseline-arrow_forward_ios-24px.svg')
+
+      p 
+
+      #articleWords.explainable.hidden.lvl-two.lvl-four.toggle-butt.off(onclick="ArticlePage.toggleArticleWords();" style='flex: 0.8;')
+        .header
+          div.left-switch
+            label.switch
+              input#articleWordsSwitch(type="checkbox")
+              span.slider.round
+          div.right-label  Show key words in the article
+    
+      p 
+
+      #topSentences.explainable.lvl-three.lvl-four.hidden.closed.toggle-butt(onclick="ArticlePage.toggleTopSentences();" style="border-radius: 4px; display: block; width: -webkit-fill-available; text-align: center;")
+        .header
+          .label(style="text-align: center;") 
+            b Click to see Top Sentences
+          .right-icon
+            img(src="/img/baseline-keyboard_arrow_down-24px.svg")
+        .content
+          each sentence in article.top_sentences    
+            p= sentence
+
+      p
+        
+      #button-row.exp_width
+        div.choose.btn.btn-outline-success(onclick="Actions.chooseArticle(event)", data-article_id=article._id, style="center; margin: auto; width: 80px; display: block;") Select
+    .article-img
+      if (article.unfluffed && article.unfluffed.image) 
+        img(src=article.unfluffed.image)
+        
+    .article-text
+      p#articleText.highlight-off 
+        //| #{article.text}
+
+
+  script ArticlePage.init()

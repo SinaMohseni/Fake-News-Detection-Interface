@@ -1,0 +1,22 @@
+//- ----- Verification Page: This is to verify saved logs  ----- 
+extends ../layout
+
+block moreHead
+  script(src="/js/verification.js")
+  
+block content    
+    
+  #mainContent(style='padding-bottom: 64px;')
+    h1 Vertify Code Test Page      
+    p This is just for testing.    
+        
+    input(type='text' name='participant_id')              
+    div.btn.btn-success(onclick="checkParticipantID()") Check
+    
+    h3 Complete?
+    #check
+    
+    //h4 All TaskRun Data (one TaskRun per task-condition pair)
+    //#output
+      
+        

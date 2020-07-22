@@ -1,0 +1,17 @@
+//- ----- Last Page: This is the End of Study page  ----- 
+extends ../layout
+
+block moreHead
+  script(src="/js/browseTopics.js")
+  script.          
+    const taskRun = !{JSON.stringify(taskRun)};
+  
+block content    
+  .container(style="padding:32px;")
+    h1.big-header Thanks for completing the study
+      
+    #verification(style='text-align: center;')
+      h1 Verification Code:
+      h3(style=' user-select: text;') #{taskRun.participant_id}
+      p Enter this code in the other page to complete the HIT.
+      //- a(href='/verify') Test Verification Page (copy the code before you go-go)

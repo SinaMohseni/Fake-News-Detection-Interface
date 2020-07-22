@@ -1,0 +1,1246 @@
+//- ----- Page 4: This is the Pre-study quesstionnaire form  ----- 
+
+
+      //- All questions
+      //- helpful-interface
+      //- true-selection
+      //- confident-selection
+      //- helpful-ai      
+      //- enough-information
+      //- exp-useful
+      //- ai-understanding
+      //- ai-weakness
+      //- ai-accuracy
+      //- ai-trust
+      //- trust-exp
+      //- ai-reliance
+     
+
+extends ../layout
+
+  
+
+block moreHead
+  link(href='/style/questions.css', rel="stylesheet", type='text/css') 
+  
+  script.
+    const taskRun = !{JSON.stringify(taskRun)};
+    const questionSet = !{JSON.stringify(questionSet)};
+    var accuracy_range = 50;    
+    var fake_range = 50;
+    var mental_model_range = 50;    
+    var fake_changed = false;
+    var acc_changed = false;
+    var mental_model_changed = false;
+
+
+    function attemptToContinue(){
+
+      var unix = Math.round(+new Date()/1000);
+      //- ------------- pre-study questionnaire -------------
+      if(questionSet == "pre") {
+        let gender = $("input[name='gender']:checked").val();
+        let education = $("input[name='education']:checked").val();
+        let age = $("input[name='age']:checked").val();
+        let howOften = $("input[name='howOften']:checked").val();
+        let newsJob = $("input[name='newsJob']:checked").val();      
+        let newsSource = $("input[name='newsSource']:checked");
+        let newsType = $("input[name='newsType']:checked");
+        //- let newsType = $("input[name='newsType']:checked")
+
+        let newsType_str = ''
+        for(var i=0; i< newsType.length; i++){
+        newsType_str += newsType[i].value + " ";
+        }
+
+        let newsSource_str = ''
+        for(var i=0; i< newsSource.length; i++){
+        newsSource_str += newsSource[i].value + " ";
+        }
+
+        additionalLongEnough = true; 
+        limitationLongEnough  = true;
+        reasoningLongEnough  = true;
+        strategyLongEnough = true;
+
+        if ( (gender && education && age && howOften && newsJob && newsType_str && newsSource_str && acc_changed && fake_changed) || (taskRun.mturk_id == 'god')) {
+          $("#errorMessage").text("Please wait...")
+          axios.post('/log/', {
+              action: "survey_preStudy",
+              info: {
+                  gender: gender,
+                  education: education,
+                  age: age,
+                  howOften : howOften,
+                  newsJob : newsJob,
+                  newsType : newsType_str,
+                  newsSource : newsSource_str,
+                  fake_range: fake_range, 
+                  accuracy_range: accuracy_range, 
+                  timestamp: unix
+              }
+            }
+          );          
+          axios.post('/studyEvent', {
+              action: "pre_study",
+            }
+          ).then(res => {
+            if(res.status == 200)
+            {
+              window.location = "/study/instructions";
+            }
+          });
+          return;
+        }
+      
+      //- ------------- Mid-Study questionnaire 1 -------------
+      } else if(questionSet == "mid_cond_1") {  
+
+        let enough_information = ' '; // $("input[name='enough-information']:checked").val();
+        let helpful_interface = ' '; // $("input[name='helpful-interface']:checked").val();
+        let helpful_ai = ' '; // = $("input[name='helpful-ai']:checked").val();
+        let exp_useful_understanding = ' '; // = $("input[name='exp-useful-understanding']:checked").val();
+        let true_selection = ' '; // $("input[name='true-selection']:checked").val();
+        let confident_selection = ' '; // $("input[name='confident-selection']:checked").val();
+        let trust_when = ' '; // = $("input[name='trust-exp']:checked").val();
+
+        let ai_accuracy = mental_model_changed; // = $("input[name='ai-accuracy']:checked").val();
+        let ai_trust = $("input[name='ai-trust']:checked").val();
+        let ai_reliance = $("input[name='ai-reliance']:checked").val();
+        let ai_understanding = $("input[name='ai-understanding']:checked").val();
+
+        additionalLongEnough = true; 
+        limitationLongEnough  = true;
+        reasoningLongEnough  = true;
+        strategyLongEnough = true;
+
+        if  (ai_understanding && ai_reliance && enough_information && helpful_interface && helpful_ai && exp_useful_understanding && true_selection && confident_selection && ai_accuracy && ai_trust
+            && trust_when && strategyLongEnough && reasoningLongEnough && limitationLongEnough && additionalLongEnough)
+        {
+          $("#errorMessage").text("Please wait...")
+          axios.post('/log/', {
+              action: "mid_survey_1",
+              info: {
+                  enough_information: enough_information,
+                  helpful_interface: helpful_interface,
+                  helpful_ai: helpful_ai,
+                  exp_useful_understanding: exp_useful_understanding,
+                  true_selection: true_selection,
+                  confident_selection: confident_selection,
+                  //- ai_accuracy: ai_accuracy,
+                  mental_model_range: mental_model_range,
+                  ai_understanding: ai_understanding,
+                  ai_reliance: ai_reliance,
+                  ai_trust: ai_trust,
+                  trust_when: trust_when,
+                  strategy: ' ',
+                  reasoning: ' ',
+                  limitation: ' ',
+                  additional: ' ',
+                  timestamp: unix
+              }
+            }
+          );                
+            axios.post('/studyEvent', {
+                action: "mid_survey_1_done",  //mid_study_one
+              }
+            ).then(res => {
+              if(res.status == 200)
+              {
+                window.location = "/study";
+              }
+            });
+            return;
+          }
+      //- ------------- Mid-Study questionnaire 2 -------------
+      } else if(questionSet == "mid_cond_2") {
+
+        if(taskRun.condition_order[taskRun.current_condition] == 'no-ai') {      // noAI condition
+            
+            var enough_information = ' '; 
+            var helpful_interface = ' '; 
+            var helpful_ai = ' '; 
+            var exp_useful_understanding = ' ';
+            var ai_understanding = ' '; 
+            var true_selection =  $("input[name='true-selection']:checked").val();
+            var confident_selection = $("input[name='confident-selection']:checked").val();
+
+            var ai_accuracy = ' '; 
+            var ai_trust = ' '; 
+            var ai_reliance = ' '; 
+            var trust_when = ' ';
+
+        }else{
+
+            var enough_information = ' '; // $("input[name='enough-information']:checked").val();
+            var helpful_interface = ' '; // $("input[name='helpful-interface']:checked").val();
+            var helpful_ai = ' '; // = $("input[name='helpful-ai']:checked").val();
+            var exp_useful_understanding = ' '; // = $("input[name='exp-useful-understanding']:checked").val();
+            var ai_understanding = $("input[name='ai-understanding']:checked").val();
+            var true_selection = ' '; // $("input[name='true-selection']:checked").val();
+            var confident_selection = ' '; // $("input[name='confident-selection']:checked").val();
+
+            var ai_accuracy = mental_model_changed; // = $("input[name='ai-accuracy']:checked").val();
+            var ai_trust = $("input[name='ai-trust']:checked").val();
+            var ai_reliance = $("input[name='ai-reliance']:checked").val();
+            var trust_when = ' '; // = $("input[name='trust-exp']:checked").val();
+
+        }
+
+
+        additionalLongEnough = true; 
+        limitationLongEnough  = true;
+        reasoningLongEnough  = true;
+        strategyLongEnough = true;
+
+        if  (ai_understanding && ai_reliance && enough_information && helpful_interface && helpful_ai && exp_useful_understanding && true_selection && confident_selection && ai_accuracy && ai_trust
+            && trust_when && strategyLongEnough && reasoningLongEnough && limitationLongEnough && additionalLongEnough)
+        {
+          $("#errorMessage").text("Please wait...")
+          axios.post('/log/', {
+              action: "mid_survey_2",
+              info: {
+                  enough_information: ' ', //enough_information,
+                  helpful_interface: helpful_interface,
+                  helpful_ai:  helpful_ai,  
+                  exp_useful_understanding: exp_useful_understanding,
+                  true_selection: true_selection,
+                  confident_selection: confident_selection,
+                  //- ai_accuracy: ai_accuracy,
+                  mental_model_range: mental_model_range,
+                  ai_understanding: ai_understanding,
+                  ai_reliance: ai_reliance,
+                  ai_trust: ai_trust,
+                  trust_when: trust_when,
+                  strategy: ' ', //$("#strategy-selection")[0].value,
+                  reasoning: ' ', //$("#ai-reasoning")[0].value,
+                  limitation: ' ', //$("#ai-limitation")[0].value,
+                  additional: ' ', // $("#additional-info")[0].value,
+                  timestamp: unix
+              }
+            }
+          );         
+            axios.post('/studyEvent', {
+                action: "mid_survey_2_done",   // mid_study_one
+              }
+            ).then(res => {
+              if(res.status == 200)
+              {
+                window.location = "/study";
+              }
+            });
+            return;
+          }
+      //- ------------- End condition 1 questionnaire -------------
+      }else if(questionSet == "end_cond_1") {
+        
+        if(taskRun.condition_order[taskRun.current_condition] == 'no-ai') {      // noAI condition
+            
+            var enough_information = ' '; 
+            var helpful_interface = ' '; 
+            var helpful_ai = ' '; 
+            var exp_useful_understanding = ' ';
+            var ai_understanding = ' '; 
+            var true_selection =  $("input[name='true-selection']:checked").val();
+            var confident_selection = $("input[name='confident-selection']:checked").val();
+            var ai_accuracy = ' '; 
+            var ai_trust = ' '; 
+            var ai_reliance = ' '; 
+            var trust_when = ' ';
+
+        }else{
+
+            var enough_information = ' '; // $("input[name='enough-information']:checked").val();
+            var helpful_interface = ' '; // $("input[name='helpful-interface']:checked").val();
+            var helpful_ai = ' '; // = $("input[name='helpful-ai']:checked").val();
+            var exp_useful_understanding = ' '; // = $("input[name='exp-useful-understanding']:checked").val();
+            var ai_understanding = $("input[name='ai-understanding']:checked").val();
+            var true_selection = ' '; // $("input[name='true-selection']:checked").val();
+            var confident_selection = ' '; // $("input[name='confident-selection']:checked").val();
+
+            var ai_accuracy = mental_model_changed; // = $("input[name='ai-accuracy']:checked").val();
+            var ai_trust = $("input[name='ai-trust']:checked").val();
+            var ai_reliance = $("input[name='ai-reliance']:checked").val();
+            var trust_when = ' '; // = $("input[name='trust-exp']:checked").val();
+
+        }
+
+
+
+        additionalLongEnough = true; 
+        limitationLongEnough  = true;
+        reasoningLongEnough  = true;
+        strategyLongEnough = true;
+
+        
+
+        if  (ai_understanding && ai_reliance && enough_information && helpful_interface && helpful_ai && exp_useful_understanding && true_selection && confident_selection && ai_accuracy && ai_trust && trust_when && strategyLongEnough && reasoningLongEnough && limitationLongEnough && additionalLongEnough)
+        {
+          $("#errorMessage").text("Please wait...")
+          axios.post('/log/', {
+              action: "end_survey_1",
+              info: {
+                  enough_information: ' ', // enough_information,
+                  helpful_interface: helpful_interface,
+                  helpful_ai: helpful_ai,
+                  exp_useful_understanding: exp_useful_understanding,
+                  true_selection: true_selection,
+                  confident_selection: confident_selection,
+                  //- ai_accuracy: ai_accuracy,
+                  mental_model_range: mental_model_range,
+                  ai_understanding: ai_understanding,
+                  ai_reliance: ai_reliance,
+                  ai_trust: ai_trust,
+                  trust_when: trust_when,
+                  strategy: ' ',// $("#strategy-selection")[0].value,
+                  reasoning: ' ',//$("#ai-reasoning")[0].value,
+                  limitation: ' ',//$("#ai-limitation")[0].value,
+                  additional: ' ',// $("#additional-info")[0].value,
+                  timestamp: unix
+              }
+            }
+          ); 
+          axios.post('/studyEvent', {
+              action: "end_survey_1_done",
+            }
+          ).then(res => {
+            if(res.status == 200)
+            {
+              window.location = "/study";
+            }
+          });
+          return;
+        }
+       
+      //- ------------- End-Study questionnaire 2 -------------
+      } else if(questionSet == "end_cond_2") {  
+        //- let understand = $("input[name='complete-understand']:checked").val();
+        //- let weaknesses = $("input[name='complete-weaknesses']:checked").val();
+        //- let understandAccuracy = $("input[name='complete-understandmodAcc']:checked").val();
+        //- let modelAccuracy = $("input[name='complete-modelAccuracy']:checked").val();
+
+        //- let helpTask = $("input[name='complete-helped']:checked").val();
+        //- let usefulGoal = $("input[name='complete-useful']:checked").val();
+        //- let whenTotrust = $("input[name='complete-whenTotrust']:checked").val();
+        //- let detail = $("input[name='complete-detail']:checked").val();
+        
+        //- let satisfying = $("input[name='complete-satisfying']:checked").val();
+        //- let seemComplete = $("input[name='complete-seemComplete']:checked").val();
+        //- let expAccurate = $("input[name='complete-expAccurate']:checked").val();
+        //- let expHowToUse = $("input[name='complete-howToUse']:checked").val();
+        //- let predTrust = $("input[name='complete-trust']:checked").val();
+        
+        strategyLongEnough = $("#strategy-selection")[0].value.length > 20;
+        reasoningLongEnough = $("#ai-reasoning")[0].value.length > 20;
+        limitationLongEnough =  $("#ai-limitation")[0].value.length > 20;
+        additionalLongEnough = $("#additional-info")[0].value.length > 20;
+        
+
+        if(additionalLongEnough && limitationLongEnough && reasoningLongEnough && strategyLongEnough)
+        {
+        $("#errorMessage").text("Please wait...")
+          axios.post('/log/', {
+              action: "post_study_survey",
+              info: {
+                  enough_information: ' ',//  enough_information,
+                  helpful_interface: ' ',//  helpful_interface,
+                  helpful_ai: ' ',//  helpful_ai,
+                  exp_useful_understanding: ' ',//  exp_useful_understanding,
+                  true_selection: ' ',//  true_selection,
+                  confident_selection: ' ',  //  confident_selection,
+                  ai_accuracy: ' ',          //  ai_accuracy,
+                  ai_trust: ' ',            //  ai_trust,
+                  trust_when: ' ',   //  trust_when,
+                  strategy: $("#strategy-selection")[0].value,
+                  reasoning: $("#ai-reasoning")[0].value,
+                  limitation: $("#ai-limitation")[0].value,
+                  additional: $("#additional-info")[0].value,
+                  timestamp: unix
+              }
+            }
+          );               
+          axios.post('/studyEvent', {
+              action: "end_survey_2_done",
+            }
+          ).then(res => {
+            if(res.status == 200)
+            {
+              window.location = "/study";
+            }
+          });
+          return;
+        }
+      }  
+
+      //- ------------- Post-questionnaire -------------
+      else if(questionSet == "complete") {
+
+        if(taskRun.condition_order[taskRun.current_condition] == 'no-ai') {      // noAI condition
+            
+              var enough_information = $("input[name='enough-information']:checked").val();
+              var helpful_interface = $("input[name='helpful-interface']:checked").val();
+              var helpful_ai = ' '; // $("input[name='helpful-ai']:checked").val();
+              var ai_understanding =  ' '; // $("input[name='ai-understanding']:checked").val();
+              var ai_weakness = ' '; //  $("input[name='ai-weakness']:checked").val();
+              var exp_useful_understanding = ' '; // $("input[name='exp-useful-understanding']:checked").val();
+              var true_selection =  $("input[name='true-selection']:checked").val();
+              var confident_selection = $("input[name='confident-selection']:checked").val();
+              var ai_accuracy = 55; // mental_model_changed; // = $("input[name='ai-accuracy']:checked").val();
+              var ai_trust = ' '; //  $("input[name='ai-trust']:checked").val();
+              var trust_when = ' '; // $("input[name='trust-exp']:checked").val();
+              var ai_reliance =  ' '; // $("input[name='ai-reliance']:checked").val();
+          
+          }else if(taskRun.condition_order[taskRun.current_condition] == 'ai') {     // AI condition
+              var enough_information = $("input[name='enough-information']:checked").val();
+              var helpful_interface = $("input[name='helpful-interface']:checked").val();
+              var helpful_ai = $("input[name='helpful-ai']:checked").val();
+              var ai_understanding = $("input[name='ai-understanding']:checked").val();
+              var ai_weakness = $("input[name='ai-weakness']:checked").val();
+              var exp_useful_understanding = ' '; // $("input[name='exp-useful-understanding']:checked").val();
+              var true_selection =  $("input[name='true-selection']:checked").val();
+              var confident_selection = $("input[name='confident-selection']:checked").val();
+
+              var ai_accuracy = mental_model_changed; // = $("input[name='ai-accuracy']:checked").val();
+              var ai_trust = $("input[name='ai-trust']:checked").val();
+              var trust_when = ' '; // $("input[name='trust-exp']:checked").val();
+              var ai_reliance = $("input[name='ai-reliance']:checked").val();
+
+          }else{
+              var enough_information = $("input[name='enough-information']:checked").val();
+              var helpful_interface = $("input[name='helpful-interface']:checked").val();
+              var helpful_ai = $("input[name='helpful-ai']:checked").val();
+              var ai_understanding = $("input[name='ai-understanding']:checked").val();
+              var ai_weakness = $("input[name='ai-weakness']:checked").val();
+              var exp_useful_understanding = $("input[name='exp-useful-understanding']:checked").val();
+              var true_selection =  $("input[name='true-selection']:checked").val();
+              var confident_selection = $("input[name='confident-selection']:checked").val();
+
+              var ai_accuracy = mental_model_changed; // = $("input[name='ai-accuracy']:checked").val();
+              var ai_trust = $("input[name='ai-trust']:checked").val();
+              var trust_when = $("input[name='trust-exp']:checked").val();
+              var ai_reliance = $("input[name='ai-reliance']:checked").val();
+          }
+
+
+        additionalLongEnough = true; 
+        limitationLongEnough  = true;
+        reasoningLongEnough  = true;
+        strategyLongEnough = true;
+
+        
+        //- console.log(ai_understanding,  ai_reliance , enough_information , helpful_interface, helpful_ai ,exp_useful_understanding , true_selection,  confident_selection , ai_accuracy , ai_trust , trust_when , strategyLongEnough , reasoningLongEnough , limitationLongEnough ,additionalLongEnough)
+
+        if  (ai_weakness && ai_understanding && ai_reliance && enough_information && helpful_interface && helpful_ai && exp_useful_understanding && true_selection && confident_selection && ai_accuracy && ai_trust && trust_when && strategyLongEnough && reasoningLongEnough && limitationLongEnough && additionalLongEnough)
+        {
+          $("#errorMessage").text("Please wait...")
+          axios.post('/log/', {
+              action: "end_survey_2",
+              info: {
+                  enough_information: ' ', //enough_information,
+                  helpful_interface: helpful_interface,
+                  helpful_ai:  helpful_ai,
+                  exp_useful_understanding: exp_useful_understanding,
+                  true_selection: true_selection,
+                  confident_selection: confident_selection,
+                  //- ai_accuracy: ai_accuracy,
+                  mental_model_range: mental_model_range,
+                  ai_understanding: ai_understanding,
+                  ai_weakness: ai_weakness,
+                  ai_reliance: ai_reliance,
+                  ai_trust: ai_trust,
+                  trust_when: trust_when,
+                  strategy: ' ',// $("#strategy-selection")[0].value,
+                  reasoning: ' ',//  $("#ai-reasoning")[0].value,
+                  limitation: ' ',//  $("#ai-limitation")[0].value,
+                  additional: ' ',// $("#additional-info")[0].value,
+                  timestamp: unix
+              }
+            }
+          );             
+          axios.post('/studyEvent', {
+              action: "final_survey_done",
+            }
+          ).then(res => {
+            if(res.status == 200)
+            {
+              window.location = "/study";
+            }
+          });
+          //window.location = "/study";
+          return;
+        }
+      }
+
+      if(additionalLongEnough && limitationLongEnough && reasoningLongEnough && strategyLongEnough)
+        $("#errorMessage").text("Please answer all the questions")     
+      else
+        $("#errorMessage").text("Please provide longer descriptions")
+
+    }
+    
+    function init() {
+      
+
+      if(questionSet == "pre") {
+        show('.pre')
+        $("#continueButton").text("Begin")
+
+
+      } else if(questionSet == "mid_cond_1") {
+        //- body
+        show('.task-survey')  
+
+        if (taskRun.condition_order[taskRun.current_condition] == 'no-ai') {      // noAI condition
+            show('.true-selection')       // ok 
+            show('.confident-selection')  // ok
+          }else{
+            //- questions
+            show('.ai-reliance')
+            show('.ai-trust')
+            show('.ai-accuracy')
+            show('.ai-understanding')
+
+          }
+      
+      } else if (questionSet == "mid_cond_2") {
+        //- body
+        show('.task-survey') 
+        
+        if(taskRun.condition_order[taskRun.current_condition] == 'no-ai') {      // noAI condition
+            show('.true-selection')       // ok 
+            show('.confident-selection')  // ok
+          }else{
+            //- questions
+            show('.ai-reliance')
+            show('.ai-trust')
+            show('.ai-accuracy')
+            show('.ai-understanding')
+
+          }
+
+      
+      } else if (questionSet == "end_cond_1") {
+        //- body
+        show('.task-survey') 
+        
+        if(taskRun.condition_order[taskRun.current_condition] == 'no-ai') {      // noAI condition
+            show('.true-selection')       // ok 
+            show('.confident-selection')  // ok
+          }else{
+            //- questions
+            show('.ai-reliance')
+            show('.ai-trust')
+            show('.ai-accuracy')
+            show('.ai-understanding')
+
+          }
+
+      } else if(questionSet == "end_cond_2") {
+        show('.post-survey')
+        $("#continueButton").text("Complete Study")
+
+      } else if(questionSet == "complete") {
+
+        //- body
+        //- show('.task-survey') 
+        show('.post-questions')
+
+        if(taskRun.condition_order[taskRun.current_condition] == 'no-ai') {      // noAI condition
+            //- questions
+            show('.enough-information')  // ok 
+            show('.helpful-interface')   // ok
+            //- show('.helpful-ai')          
+            //- show('.ai-understanding')    
+            //- show('.ai-weakness')
+            //- show('.exp-useful-understanding')
+            show('.true-selection')       // ok 
+            show('.confident-selection')  // ok
+            //- show('.ai-accuracy')        // ok
+            //- show('.ai-trust')          // ok
+            //- show('.trust-exp')         
+            //- show('.ai-reliance')      // ok
+          }
+          if(taskRun.condition_order[taskRun.current_condition] == 'ai') {     // AI condition
+            //- questions
+            show('.enough-information')   // ok 
+            show('.helpful-interface')    // ok
+            show('.helpful-ai')           // ok
+            show('.ai-understanding')     // ok
+            show('.ai-weakness')          // ok
+            //- show('.exp-useful-understanding')
+            show('.true-selection')       // ok
+            show('.confident-selection')  // ok
+            show('.ai-accuracy')          // ok
+            show('.ai-trust')             // ok
+            //- show('.trust-exp')         
+            show('.ai-reliance')          // ok
+          }       
+          if(taskRun.condition_order[taskRun.current_condition] == 'attention') {     // XAI: attention
+            //- questions
+            show('.enough-information')
+            show('.helpful-interface')
+            show('.helpful-ai')
+            show('.ai-understanding')
+            show('.ai-weakness')
+            show('.exp-useful-understanding')
+            show('.true-selection')
+            show('.confident-selection')
+            show('.ai-accuracy')
+            show('.ai-trust')
+            show('.trust-exp')
+            show('.ai-reliance')
+            
+            // Images
+            show('.exp_attn')
+          }      
+          if(taskRun.condition_order[taskRun.current_condition] == 'attribute') {     // XAI: attribute
+            //- questions
+            show('.enough-information')
+            show('.helpful-interface')
+            show('.helpful-ai')
+            show('.ai-understanding')
+            show('.ai-weakness')
+            show('.exp-useful-understanding')
+            show('.true-selection')
+            show('.confident-selection')
+            show('.ai-accuracy')
+            show('.ai-trust')
+            show('.trust-exp')
+            show('.ai-reliance')
+            
+            // Images
+            show('.exp_attr')
+          }
+          if(taskRun.condition_order[taskRun.current_condition] == 'expert') {     // XAI: attention+attribute
+            //- questions
+            show('.enough-information')
+            show('.helpful-interface')
+            show('.helpful-ai')
+            show('.ai-understanding')
+            show('.ai-weakness')
+            show('.exp-useful-understanding')
+            show('.true-selection')
+            show('.confident-selection')
+            show('.ai-accuracy')
+            show('.ai-trust')
+            show('.trust-exp')
+            show('.ai-reliance')
+
+            // Images
+            show('.exp_all')
+          }
+
+        
+      }
+      
+
+      var unix = Math.round(+new Date()/1000);
+      axios.post('/log/', {
+          action: "study_start",
+          info: {
+              timestamp: unix
+          }
+        }
+      );   
+
+      // 1- mental_model_slider
+      var mental_model_slider = document.getElementById("perceptionAccuracy");
+      var mental_output = document.getElementById("mental_output");
+
+      mental_model_slider.oninput = function() {
+        mental_model_changed = true;
+        mental_model_range = mental_model_slider.value;
+        mental_output.innerHTML = 'AI Accuracy: '+ mental_model_range + "%";
+      }
+
+      // 2- fake_slider
+      var fake_slider = document.getElementById("fakePercentage");
+      var fake_output = document.getElementById("fake_output");
+
+      fake_slider.oninput = function() {
+        fake_changed = true;
+        fake_output.innerHTML = 'False News Percentage: '+ fake_slider.value + "%";
+        fake_range = fake_slider.value;
+      }
+
+      // 3- acc_slider
+      var acc_slider = document.getElementById("accuracyExpectation");
+      var acc_output = document.getElementById("acc_output");
+
+      acc_slider.oninput = function() {
+        acc_changed = true;
+        acc_output.innerHTML = 'Preferred AI accuracy: '+ acc_slider.value + "%";
+        accuracy_range = acc_slider.value;
+      }
+    }
+    
+block content    
+  //- ----- all questionnairs hidden -----
+  .container(style="padding:32px;")
+    h1.big-header.pre.hidden Pre-Study Questionnaire
+    h1.big-header.task-survey.hidden  Mid-Study Questionnaire
+    h1.big-header.post-questions.hidden  Final Questionnaire
+    h1.big-header.post-survey.hidden Final Questionnaire
+
+    //-                 --------------- Pre questionnairs -------------
+    //-                 --------------- Pre questionnairs -------------
+    //-                 --------------- Pre questionnairs -------------
+    #questionnaire.pre.hidden
+      h3(style="font-size:22px;")
+        | Please complete the initial questionnaire then click 'Begin' at the bottom to start the study.
+      form
+        fieldset.form-group
+          .row
+            legend.form-check-label.col-sm-6.pt-0 What is your gender?
+            .col-sm-6
+              .form-check
+                input.form-check-input.checkmark(type="radio", name="gender", value="female")
+                label.form-radio-label Female
+              .form-check
+                input.form-check-input.checkmark(type="radio", name="gender", value="male")
+                label.form-radio-label Male
+              .form-check
+                input.form-check-input.checkmark(type="radio", name="gender", value="other")
+                label.form-radio-label Other / Prefer not to provide        
+        fieldset.form-group(style="background: #efefef;")
+          .row
+            legend.form-check-label.col-sm-6.pt-0 What is the highest level of education you have completed or the highest degree you have received?
+            .col-sm-6
+              .form-check
+                input.form-check-input.checkmark(type="radio", name="education", value="lessThanHighschool")
+                label.form-check-label Less than high school degree
+              .form-check
+                input.form-check-input.checkmark(type="radio", name="education", value="highschool")
+                label.form-check-label High school degree or equivalent (e.g., GED)
+              .form-check
+                input.form-check-input.checkmark(type="radio", name="education", value="someCollege")
+                label.form-check-label Some college but no degree
+              .form-check
+                input.form-check-input.checkmark(type="radio", name="education", value="bachelor")
+                label.form-check-label Bachelor degree
+              .form-check
+                input.form-check-input.checkmark(type="radio", name="education", value="graduate")
+                label.form-check-label Graduate degree                             
+        fieldset.form-group
+          .row
+            legend.form-check-label.col-sm-6.pt-0 Which category below includes your age?
+            .col-sm-6
+              .form-check
+                input.form-check-input.checkmark(type="radio", name="age", value="18")
+                label.form-check-label 18-20
+              .form-check
+                input.form-check-input.checkmark(type="radio", name="age", value="20")
+                label.form-check-label 21-29
+              .form-check
+                input.form-check-input.checkmark(type="radio", name="age", value="30")
+                label.form-check-label 30-39
+              .form-check
+                input.form-check-input.checkmark(type="radio", name="age", value="40")
+                label.form-check-label 40-49
+              .form-check
+                input.form-check-input.checkmark(type="radio", name="age", value="50")
+                label.form-check-label 50-59
+              .form-check
+                input.form-check-input.checkmark(type="radio", name="age", value="60")
+                label.form-check-label 60 or older                 
+        fieldset.form-group(style="background: #efefef;")
+          .row
+            legend.form-check-label.col-sm-6.pt-0 How often do you read or watch daily news?
+            .col-sm-6
+              .form-check
+                input.form-check-input.checkmark(type="radio", name="howOften", value="multipleTimes")
+                label.form-check-label Multiple times per day
+              .form-check
+                input.form-check-input.checkmark(type="radio", name="howOften", value="daily")
+                label.form-check-label Once per day
+              .form-check
+                input.form-check-input.checkmark(type="radio", name="howOften", value="often")
+                label.form-check-label Often, but not daily
+              .form-check
+                input.form-check-input.checkmark(type="radio", name="howOften", value="rarely")
+                label.form-check-label Rarely
+              .form-check
+                input.form-check-input.checkmark(type="radio", name="howOften", value="never")
+                label.form-check-label Never      
+        fieldset.form-group
+          .row
+            legend.form-check-label.col-sm-6.pt-0 Do you write or report news (of any kind) as a job or hobby?
+            .col-sm-6
+              .form-check
+                input.form-check-input.checkmark(type="radio", name="newsJob", value="news_write")
+                label.form-check-label I write or edit news as a job or hobby
+              .form-check
+                input.form-check-input.checkmark(type="radio", name="newsJob", value="news_reporter")
+                label.form-check-label I report news as a job or hobby
+              .form-check
+                input.form-check-input.checkmark(type="radio", name="newsJob", value="other_writer")
+                label.form-check-label I am a writer but not news writer 
+              .form-check
+                input.form-check-input.checkmark(type="radio", name="newsJob", value="other_reporter")
+                label.form-check-label I am a reporter but not news reporter 
+              .form-check
+                input.form-check-input.checkmark(type="radio", name="newsJob", value="socialmedia")
+                label.form-check-label No, but I actively share posts in social media 
+              .form-check
+                input.form-check-input.checkmark(type="radio", name="newsJob", value="no")
+                label.form-check-label No, none   
+        fieldset.form-group(style="background: #efefef;")
+          .row
+            legend.form-check-label.col-sm-6.pt-0 What type of daily news do you usually follow? (multiple choices)
+            .col-sm-6
+              .form-check
+                input.form-check-input.checkmark(type="checkbox", name="newsType", value="political")
+                label.form-check-label Political
+              .form-check
+                input.form-check-input.checkmark(type="checkbox", name="newsType", value="economy")
+                label.form-check-label Economy
+              .form-check
+                input.form-check-input.checkmark(type="checkbox", name="newsType", value="tech")
+                label.form-check-label Tech
+              .form-check
+                input.form-check-input.checkmark(type="checkbox", name="newsType", value="sports")
+                label.form-check-label Sports
+              .form-check
+                input.form-check-input.checkmark(type="checkbox", name="newsType", value="celebrity")
+                label.form-check-label Celebrity
+              .form-check
+                input.form-check-input.checkmark(type="checkbox", name="newsType", value="weather")
+                label.form-check-label Weather                         
+        fieldset.form-group
+          .row
+            legend.form-check-label.col-sm-6.pt-0 Where do you get your daily news from? (multiple choices)
+            .col-sm-6
+              .form-check
+                input.form-check-input.checkmark(type="checkbox", name="newsSource", value="tv")
+                label.form-check-label TV and online broadcasts
+              .form-check
+                input.form-check-input.checkmark(type="checkbox", name="newsSource", value="radio")
+                label.form-check-label Radio
+              .form-check
+                input.form-check-input.checkmark(type="checkbox", name="newsSource", value="print")
+                label.form-check-label Newspaper
+              .form-check
+                input.form-check-input.checkmark(type="checkbox", name="newsSource", value="online_site")
+                label.form-check-label Online news websites 
+              .form-check
+                input.form-check-input.checkmark(type="checkbox", name="newsSource", value="onlice_video")
+                label.form-check-label Online videos and clips (e.g. Youtube)
+              .form-check
+                input.form-check-input.checkmark(type="checkbox", name="newsSource", value="socialmedia")
+                label.form-check-label Social Media (e.g. Facebook, Twitter)
+              .form-check
+                input.form-check-input.checkmark(type="checkbox", name="newsSource", value="newsSearch")
+                label.form-check-label News Search (e.g. Google news, Yahoo news)
+        fieldset.form-group(style="background: #efefef;")
+          .row
+            legend.form-check-label.col-sm-6.pt-0 In your experience, what percentage of the News that you read daily are False News? (e.g., fake news, hoax, rumor, made up stories, misinformation)
+            .col-sm-6
+              .form-check
+                span#fake_output False News Percentage:
+                input.slider(type="range" min="1" max="100" value="50" id="fakePercentage")
+
+        fieldset.form-group(style="background: #efefef;")
+          .row
+            legend.form-check-label.col-sm-6.pt-0 If you had an Artificial Intelligence (AI) algorithm to review your daily news for fake news detection, what would be your expectation of AI accuracy to do a good job?
+            .col-sm-6
+              .form-check
+                //- p This accuracy: #{accuracy_range}
+                span#acc_output Preferred AI accuracy:
+                input.slider(type="range" min="1" max="100" value="50" id="accuracyExpectation")
+
+                  //- ------------------------ Mid-task Survey ------------------------
+                  //- ------------------------ Mid-task Survey ------------------------
+                  //- ------------------------ Mid-task Survey ------------------------
+
+    #questionnaire.task-survey.post-questions.hidden
+      h3(style="font-size:22px;")
+        | Please complete the questionnaire about the study so far then click 'Continue' in the bottom.
+        //- --- Understanding UI and Frustration ---
+  
+      ul.helpful-interface.hidden 
+        li
+          fieldset.form-group
+            .row
+              legend.col-form-label.pt-0 This interface was helpful for selecting and sharing true news stories:
+              .form-check.form-check-inline
+                input.form-check-input.checkmark(type="radio", name="helpful-interface", value="6")
+                label.form-check-label Strongly Agree
+              .form-check.form-check-inline
+                input.form-check-input.checkmark(type="radio", name="helpful-interface", value="5")
+                label.form-check-label Agree
+              .form-check.form-check-inline
+                input.form-check-input.checkmark(type="radio", name="helpful-interface", value="4")
+                label.form-check-label Slightly Agree
+              .form-check.form-check-inline
+                input.form-check-input.checkmark(type="radio", name="helpful-interface", value="3")
+                label.form-check-label Slightly Disagree
+              .form-check.form-check-inline
+                input.form-check-input.checkmark(type="radio", name="helpful-interface", value="2")
+                label.form-check-label Disagree
+              .form-check.form-check-inline
+                input.form-check-input.checkmark(type="radio", name="helpful-interface", value="1")
+                label.form-check-label Strongly Disagree
+
+      hr.true-selection.hidden 
+      ul.true-selection.hidden
+        li 
+          fieldset.form-group
+            .row
+              legend.col-form-label.pt-0 I think the news that I shared were:
+              .form-check.form-check-inline
+                input.form-check-input.checkmark(type="radio", name="true-selection", value="6")
+                label.form-check-label All True
+              .form-check.form-check-inline
+                input.form-check-input.checkmark(type="radio", name="true-selection", value="5")
+                label.form-check-label Mostly True
+              .form-check.form-check-inline
+                input.form-check-input.checkmark(type="radio", name="true-selection", value="4")
+                label.form-check-label Possibly True
+              .form-check.form-check-inline
+                input.form-check-input.checkmark(type="radio", name="true-selection", value="3")
+                label.form-check-label Possibly Fake
+              .form-check.form-check-inline
+                input.form-check-input.checkmark(type="radio", name="true-selection", value="2")
+                label.form-check-label Mostly Fake   
+              .form-check.form-check-inline
+                input.form-check-input.checkmark(type="radio", name="true-selection", value="1")
+                label.form-check-label All Fake
+
+      hr.confident-selection.hidden 
+      ul.confident-selection.hidden
+        li 
+          fieldset.form-group
+            .row
+              legend.col-form-label.pt-0 I am confident about trueness of my selected news stories:
+              .form-check.form-check-inline
+                input.form-check-input.checkmark(type="radio", name="confident-selection", value="6")
+                label.form-check-label Strongly Agree
+              .form-check.form-check-inline
+                input.form-check-input.checkmark(type="radio", name="confident-selection", value="5")
+                label.form-check-label Agree
+              .form-check.form-check-inline
+                input.form-check-input.checkmark(type="radio", name="confident-selection", value="4")
+                label.form-check-label Slightly Agree
+              .form-check.form-check-inline
+                input.form-check-input.checkmark(type="radio", name="confident-selection", value="3")
+                label.form-check-label Slightly Disagree 
+              .form-check.form-check-inline
+                input.form-check-input.checkmark(type="radio", name="confident-selection", value="2")
+                label.form-check-label Disagree
+              .form-check.form-check-inline
+                input.form-check-input.checkmark(type="radio", name="confident-selection", value="1")
+                label.form-check-label Strongly Disagree
+
+      hr.helpful-ai.hidden
+      ul.helpful-ai.hidden
+        li 
+          fieldset.form-group
+            .row
+              legend.col-form-label.pt-0 The AI predictions were helpful in identifying fake news:
+            .row 
+              p
+            .row
+              img.tutorial-img(src="/img/tutorialScreens/ai.png" style="text-align: center;")
+            .row 
+              p
+            .row
+              .form-check.form-check-inline
+                input.form-check-input.checkmark(type="radio", name="helpful-ai", value="6")
+                label.form-check-label Strongly Agree
+              .form-check.form-check-inline
+                input.form-check-input.checkmark(type="radio", name="helpful-ai", value="5")
+                label.form-check-label Agree
+              .form-check.form-check-inline
+                input.form-check-input.checkmark(type="radio", name="helpful-ai", value="4")
+                label.form-check-label Slightly Agree
+              .form-check.form-check-inline
+                input.form-check-input.checkmark(type="radio", name="helpful-ai", value="3")
+                label.form-check-label Slightly Disagree
+              .form-check.form-check-inline
+                input.form-check-input.checkmark(type="radio", name="helpful-ai", value="2")
+                label.form-check-label Disagree 
+              .form-check.form-check-inline
+                input.form-check-input.checkmark(type="radio", name="helpful-ai", value="1")
+                label.form-check-label Strongly Disagree
+
+      hr.enough-information.hidden
+      ul.enough-information.hidden
+        li 
+          fieldset.form-group
+            .row
+              legend.col-form-label.pt-0 I had enough information to understand how the AI works:
+              .form-check.form-check-inline
+                input.form-check-input.checkmark(type="radio", name="enough-information", value="6")
+                label.form-check-label Strongly Agree
+              .form-check.form-check-inline
+                input.form-check-input.checkmark(type="radio", name="enough-information", value="5")
+                label.form-check-label Agree
+              .form-check.form-check-inline
+                input.form-check-input.checkmark(type="radio", name="enough-information", value="4")
+                label.form-check-label Slightly Agree
+              .form-check.form-check-inline
+                input.form-check-input.checkmark(type="radio", name="enough-information", value="3")
+                label.form-check-label Slightly Disagree
+              .form-check.form-check-inline
+                input.form-check-input.checkmark(type="radio", name="enough-information", value="2")
+                label.form-check-label Disagree   
+              .form-check.form-check-inline
+                input.form-check-input.checkmark(type="radio", name="enough-information", value="1")
+                label.form-check-label Strongly Disagree 
+
+      hr.exp-useful-understanding.hidden 
+      ul.exp-useful-understanding.hidden
+        li
+          fieldset.form-group
+            .row
+              legend.col-form-label.pt-0 The provided explanations were useful to understand the AI predictions:
+            .row 
+              p
+            .row
+               img.tutorial-img.exp_attn.hidden(src="/img/tutorialScreens/exp_attn.png" style="text-align: center;")
+            .row 
+              img.tutorial-img.exp_attr.hidden(src="/img/tutorialScreens/exp_attr.png" style="text-align: center;")
+            .row 
+              img.tutorial-img.exp_all.hidden(src="/img/tutorialScreens/exp_all.png" style="text-align: center;")
+            .row 
+              p
+            .row 
+              .form-check.form-check-inline
+                input.form-check-input.checkmark(type="radio", name="exp-useful-understanding", value="6")
+                label.form-check-label Strongly Agree
+              .form-check.form-check-inline
+                input.form-check-input.checkmark(type="radio", name="exp-useful-understanding", value="5")
+                label.form-check-label Agree
+              .form-check.form-check-inline
+                input.form-check-input.checkmark(type="radio", name="exp-useful-understanding", value="4")
+                label.form-check-label Slightly Agree
+              .form-check.form-check-inline
+                input.form-check-input.checkmark(type="radio", name="exp-useful-understanding", value="3")
+                label.form-check-label Slightly Disagree
+              .form-check.form-check-inline
+                input.form-check-input.checkmark(type="radio", name="exp-useful-understanding", value="2")
+                label.form-check-label Disagree
+              .form-check.form-check-inline
+                input.form-check-input.checkmark(type="radio", name="exp-useful-understanding", value="1")
+                label.form-check-label Strongly Disagree
+
+      hr.ai-understanding.hidden
+      ul.ai-understanding.hidden
+        li
+          fieldset.form-group
+              .row
+                legend.col-form-label.pt-0 I understand how this Fake New detection AI works:
+                .form-check.form-check-inline
+                  input.form-check-input.checkmark(type="radio", name="ai-understanding", value="6")
+                  label.form-check-label Strongly Agree
+                .form-check.form-check-inline
+                  input.form-check-input.checkmark(type="radio", name="ai-understanding", value="5")
+                  label.form-check-label Agree
+                .form-check.form-check-inline
+                  input.form-check-input.checkmark(type="radio", name="ai-understanding", value="4")
+                  label.form-check-label Slightly Agree
+                .form-check.form-check-inline
+                  input.form-check-input.checkmark(type="radio", name="ai-understanding", value="3")
+                  label.form-check-label Slightly Disagree
+                .form-check.form-check-inline
+                  input.form-check-input.checkmark(type="radio", name="ai-understanding", value="2")
+                  label.form-check-label Disagree
+                .form-check.form-check-inline
+                  input.form-check-input.checkmark(type="radio", name="ai-understanding", value="1")
+                  label.form-check-label Strongly Disagree
+
+      hr.ai-weakness.hidden
+      ul.ai-weakness.hidden
+        li
+          fieldset.form-group
+              .row
+                legend.col-form-label.pt-0 I think I understand the Fake News detector AI's weaknesses:
+                .form-check.form-check-inline
+                  input.form-check-input.checkmark(type="radio", name="ai-weakness", value="6")
+                  label.form-check-label Strongly Agree
+                .form-check.form-check-inline
+                  input.form-check-input.checkmark(type="radio", name="ai-weakness", value="5")
+                  label.form-check-label Agree
+                .form-check.form-check-inline
+                  input.form-check-input.checkmark(type="radio", name="ai-weakness", value="4")
+                  label.form-check-label Slightly Agree
+                .form-check.form-check-inline
+                  input.form-check-input.checkmark(type="radio", name="ai-weakness", value="3")
+                  label.form-check-label Slightly Disagree
+                .form-check.form-check-inline
+                  input.form-check-input.checkmark(type="radio", name="ai-weakness", value="2")
+                  label.form-check-label Disagree
+                .form-check.form-check-inline
+                  input.form-check-input.checkmark(type="radio", name="ai-weakness", value="1")
+                  label.form-check-label Strongly Disagree 
+
+      hr.ai-accuracy.hidden
+      ul.ai-accuracy.hidden
+        li 
+          fieldset.form-group
+            .row
+              legend.col-form-label.col-sm-6 What was the accuracy of the AI fake news detection?
+                .form-check
+                  span#mental_output AI Accuracy:
+                  input.slider(type="range" min="1" max="100" value="50" id="perceptionAccuracy")
+
+
+      //- hr.ai-accuracy.hidden
+      //- ul.ai-accuracy.hidden
+      //-   li 
+      //-     fieldset.form-group
+      //-       .row
+      //-         legend.col-form-label.pt-0 What was the accuracy of the AI fake news detection?
+      //-         .form-check.form-check-inline
+      //-           input.form-check-input(type="radio", name="ai-accuracy", value="100")
+      //-           label.form-check-label 100%
+      //-         .form-check.form-check-inline
+      //-           input.form-check-input(type="radio", name="ai-accuracy", value="90")
+      //-           label.form-check-label 90%
+      //-         .form-check.form-check-inline
+      //-           input.form-check-input(type="radio", name="ai-accuracy", value="80")
+      //-           label.form-check-label 80%
+      //-         .form-check.form-check-inline
+      //-           input.form-check-input(type="radio", name="ai-accuracy", value="70")
+      //-           label.form-check-label 70%
+      //-         .form-check.form-check-inline
+      //-           input.form-check-input(type="radio", name="ai-accuracy", value="60")
+      //-           label.form-check-label 60%
+      //-         .form-check.form-check-inline
+      //-           input.form-check-input(type="radio", name="ai-accuracy", value="50")
+      //-           label.form-check-label 50%
+      //-         .form-check.form-check-inline
+      //-           input.form-check-input(type="radio", name="ai-accuracy", value="40")
+      //-           label.form-check-label 40%
+      //-         .form-check.form-check-inline
+      //-           input.form-check-input(type="radio", name="ai-accuracy", value="30")
+      //-           label.form-check-label 30%
+      //-         .form-check.form-check-inline
+      //-           input.form-check-input(type="radio", name="ai-accuracy", value="20")
+      //-           label.form-check-label 20%
+      //-         .form-check.form-check-inline
+      //-           input.form-check-input(type="radio", name="ai-accuracy", value="10")
+      //-           label.form-check-label 10%
+      //-         .form-check.form-check-inline
+      //-           input.form-check-input(type="radio", name="ai-accuracy", value="0")
+      //-           label.form-check-label 0%
+
+
+      hr.ai-trust.hidden
+      ul.ai-trust.hidden
+        li 
+          fieldset.form-group
+            .row
+              legend.col-form-label.pt-0 I would trust this AI for fake news detection:
+              .form-check.form-check-inline
+                input.form-check-input.checkmark(type="radio", name="ai-trust", value="6")
+                label.form-check-label Strongly Agree
+              .form-check.form-check-inline
+                input.form-check-input.checkmark(type="radio", name="ai-trust", value="5")
+                label.form-check-label Agree
+              .form-check.form-check-inline
+                input.form-check-input.checkmark(type="radio", name="ai-trust", value="4")
+                label.form-check-label Slightly Agree
+              .form-check.form-check-inline
+                input.form-check-input.checkmark(type="radio", name="ai-trust", value="3")
+                label.form-check-label Slightly Disagree
+              .form-check.form-check-inline
+                input.form-check-input.checkmark(type="radio", name="ai-trust", value="2")
+                label.form-check-label Disagree
+              .form-check.form-check-inline
+                input.form-check-input.checkmark(type="radio", name="ai-trust", value="1")
+                label.form-check-label Strongly Disagree
+
+      hr.trust-exp.hidden
+      ul.trust-exp.hidden
+        li 
+          fieldset.form-group
+            .row
+              legend.col-form-label.pt-0 Provided explanations helped me judge when I should trust and not trust the AI:
+              .form-check.form-check-inline
+                input.form-check-input.checkmark(type="radio", name="trust-exp", value="6")
+                label.form-check-label Strongly Agree
+              .form-check.form-check-inline
+                input.form-check-input.checkmark(type="radio", name="trust-exp", value="5")
+                label.form-check-label Agree
+              .form-check.form-check-inline
+                input.form-check-input.checkmark(type="radio", name="trust-exp", value="4")
+                label.form-check-label Slightly Agree
+              .form-check.form-check-inline
+                input.form-check-input.checkmark(type="radio", name="trust-exp", value="3")
+                label.form-check-label Slightly Disagree
+              .form-check.form-check-inline  
+                input.form-check-input.checkmark(type="radio", name="trust-exp", value="2")
+                label.form-check-label Disagree
+              .form-check.form-check-inline
+                input.form-check-input.checkmark(type="radio", name="trust-exp", value="1")
+                label.form-check-label Strongly Disagree
+
+      hr.ai-reliance.hidden
+      ul.ai-reliance.hidden
+        li 
+          fieldset.form-group
+            .row
+              legend.col-form-label.pt-0 I would follow this AI's predictions for fake news detection on my daily news:
+              .form-check.form-check-inline
+                input.form-check-input.checkmark(type="radio", name="ai-reliance", value="6")
+                label.form-check-label Strongly Agree
+              .form-check.form-check-inline
+                input.form-check-input.checkmark(type="radio", name="ai-reliance", value="5")
+                label.form-check-label Agree
+              .form-check.form-check-inline
+                input.form-check-input.checkmark(type="radio", name="ai-reliance", value="4")
+                label.form-check-label Slightly Agree
+              .form-check.form-check-inline
+                input.form-check-input.checkmark(type="radio", name="ai-reliance", value="3")
+                label.form-check-label Slightly Disagree
+              .form-check.form-check-inline
+                input.form-check-input.checkmark(type="radio", name="ai-reliance", value="2")
+                label.form-check-label Disagree
+              .form-check.form-check-inline
+                input.form-check-input.checkmark(type="radio", name="ai-reliance", value="1")
+                label.form-check-label Strongly Disagree
+
+              //- ------------------------ survey_postStudy ------------------------
+    #questionnaire.post-survey.hidden
+      h3(style="font-size:22px;")
+        | Please complete the final questionnaire about the study then click 'Complete Study' in the bottom.
+
+      hr
+      ul
+        li 
+          fieldset.form-group
+            .row
+              legend.col-form-label.pt-0 How do you describe this AI's reasoning to find fake news?
+              textarea.form-control(id="ai-reasoning" placeholder="Brief explanation" required)
+
+      hr
+      ul
+        li 
+          fieldset.form-group
+            .row
+              legend.col-form-label.pt-0 What was your strategy for selecting true news stories?
+              textarea.form-control(id="strategy-selection" placeholder="Brief explanation" required)
+                    
+      hr
+      ul
+        li 
+          fieldset.form-group
+            .row
+              legend.col-form-label.pt-0 In your opinion, what are the biggest limitations of this AI fake news detector?
+              textarea.form-control(id="ai-limitation" placeholder="Brief explanation" required)
+      hr
+      ul
+        li 
+          fieldset.form-group
+              .row
+                legend.col-form-label.pt-0 What additional information or explanations could have helped you to make your decisions? 
+                textarea.form-control(id="additional-info" placeholder="Brief explanation" required)
+        
+              
+    .centered(style="text-align: center; margin-bottom: 42px;")
+      #errorMessage.error-message(style="text-align:center; color: red;")
+        
+      #continueButton.btn.btn-primary(onclick="attemptToContinue()" style="margin:auto;") Continue
+        
+  script init()

@@ -1,0 +1,139 @@
+//- ----- Page 6: This is the New Story page  ----- 
+
+extends ../../layout
+
+block moreHead
+  script(src="/js/Actions.js")
+  script(src="/js/Visuals.js")
+  script(src="/js/CuratorTopicPage.js")
+  link(href='/style/study.css', rel="stylesheet", type='text/css') 
+  //- link(href='/style/trueNewsSelection/pie.css', rel="stylesheet", type='text/css') 
+  //- script(src="https://mbostock.github.com/d3/d3.js?2.1.3")
+  //- script(src="https://d3js.org/d3.v4.min.js")
+  script(src="https://d3js.org/d3.v3.min.js")
+
+
+block content  
+  //-link(href='/style/landing.css', rel="stylesheet", type='text/css')  
+  //- script(src="https://d3js.org/d3.v3.min.js")
+  script.      
+    const TOPICDATA = !{JSON.stringify(topic)};
+    const taskRun = !{JSON.stringify(taskRun)};
+    //- console.log(#{topic.claim}))
+
+
+  #mainContent.container(style="background: white; margin-top:0px;")
+
+    //- Demo
+    h2(style="text-align: center; font-weight:lighter; margin-top: 32px;") News Story
+    //- h2(style="text-align: center; font-weight:lighter; margin-top: 32px;") News Story (#{taskRun.current_selected_topic}/#{taskRun.totalStories})
+       
+    div.claim
+      h1#claimHeader.highlight-off #{topic.claim_id}
+      
+      div.explainies.toggables
+              
+        #claimPrediction.explainable.lvl-one.lvl-two.lvl-three.lvl-four.closed.toggle-butt.hidden(onclick="TopicPage.toggleClaimPrediction();" style="border-radius: 4px;")
+          .header
+            .label AI prediction for this story:
+            .right-icon
+              img(src="/img/baseline-keyboard_arrow_down-24px.svg")
+          .content
+            p AI is 
+              span.fancy-number.lvl-one.hidden #{topic.confidences.overall}
+              span.fancy-number.lvl-two.hidden #{topic.confidences.model_1_4}
+              span.fancy-number.lvl-three.hidden #{topic.confidences.model_2_3}
+              span.fancy-number.lvl-four.hidden #{topic.confidences.overall}
+              |  confident that this news story is:
+              #predicitonText.lvl-one.lvl-two.lvl-three.lvl-four.true-false-text.hidden #{topic.prediction_overall} #{topic.prediction_2_3} #{topic.prediction_1_4}
+              //- #predicitonText.lvl-three.true-false-text.hidden #{topic.prediction_2_3 }
+              //- #predicitonText.lvl-two.true-false-text.hidden #{topic.prediction_1_4}
+              //- #predicitonText.lvl-one.lvl-four.true-false-text.hidden #{topic.prediction_overall}
+              //- #predicitonText.lvl-four.true-false-text.hidden #{topic.prediction_overall}
+              //- #predicitonText.hidden.true-false-text #{topic.prediction}
+
+        #claimWords.explainable.lvl-two.lvl-four.toggle-butt.off.hidden(onclick="TopicPage.toggleClaimWords();" style='flex: 0.8;')
+          .header
+            div.left-switch
+              label.switch
+                input#claimWordsSwitch(type="checkbox" onclick="TopicPage.toggleClaimWords();")
+                  //-  checked="true"
+                span.slider.round
+            div.right-label  Explain keywords for this prediction:
+
+        #claimConfidences.explainable.lvl-one.lvl-two.lvl-three.lvl-four.closed.toggle-butt.hidden(onclick="TopicPage.toggleClaimConfidences();" style="border-radius: 4px;")
+          .header
+            .label How AI came up with this prediction:
+            //- Explanations for this prediction
+            .right-icon
+              img(src="/img/baseline-keyboard_arrow_down-24px.svg")
+          .content
+            p
+            //- div Features Importance for this prediction:
+            table
+              tr
+                td.lvl-one.lvl-two.lvl-four.hidden.model-confidence Story headline:  
+                td
+                  span.hidden.lvl-one.lvl-four.fancy-number #{topic.confidences.model_1}
+                  span.hidden.lvl-two.fancy-number #{topic.confidences.model_1_clm}
+              tr
+                td.hidden.lvl-one.lvl-two.lvl-three.lvl-four.model-confidence Related articles:
+                td
+                  span.hidden.lvl-one.lvl-four.fancy-number #{(topic.confidences.model_2 + topic.confidences.model_3+ topic.confidences.model_4)/3}
+                  span.hidden.lvl-two.fancy-number #{topic.confidences.model_4_art}
+                  span.hidden.lvl-three.fancy-number #{topic.confidences.model_2_3}
+                  
+
+    .centered(style="text-align:center;") 
+      h3.sub-header(style="text-align:center; width: -webkit-fill-available;") 
+        b #{topic.articles.length} Articles
+      p Please 
+        b select one or more articles to share 
+        | if they reflect credibility of this news story. 
+      p Please 
+        b report this story as Fake News 
+        | if you find it false information.
+      p You can also 
+        b skip to next story 
+        | if you are not sure about it.
+      // button#continueButton.btn.btn-success.disabled(onClick="window.location='/study/next/selected'", style="") Select This Story
+      button#continueButton.btn.btn-success.disabled(onClick="Actions.selectStory(event)", style="") Share This Story
+      button#continueButton.btn.btn-success(onClick="Actions.reportStory(event)", style="margin-left: 32px;") Report Fake News
+      // button#skipButton.btn.btn-success(onClick="window.location='/study/next/skipped'", style="margin-left: 32px;") Skip to Next
+      button#skipButton.btn.btn-success(onClick="Actions.skipStory(event)", style="margin-left: 32px;") Skip to Next
+      // div.choose.btn.btn-outline-success(onclick="Actions.chooseArticle(event)", data-article_id=article._id, style="float: right;") Select
+    br
+    #articleList
+      each article in topic.articles
+        div.article-box(style='opacity: 0;')        
+          h3= article.title
+          div.domain
+            | By:
+            img(src="http://www.google.com/s2/favicons?domain="+article.domain)
+            div= article.domain
+          // div.link-type
+            span Link Type
+            p= article.link_type
+          //div.link
+            span Link
+            p= article. 
+          //div.number Relevance
+            div.relevanceScore.lil-box 58%
+          //div.number Source Credibility    #articleImportance 
+            div.sourceCredibilityScore.lil-box 16%
+            
+          .article-explainable.articleRel.hidden.lvl-three.lvl-four.large-info.closed(data-articleId=article._id art_imp_tot = article.article_relevance art_imp_clm= article.importance.claim article_imp = article.importance.article claim_source_imp = article.importance.claim_source article_source = article.importance.article_source data-explainable='article relevance' onclick="Visuals.showPie(event);")
+            .header
+              .label 
+                i 
+                  b Click to see explanations for article importance:
+              .right-icon
+                img(src='/img/baseline-arrow_forward_ios-24px.svg')
+
+
+          #button-row 
+            div.read.btn.btn-outline-secondary(onclick="Actions.inspectArticle(event)", data-article_id=article._id) Inspect
+                              
+            div.choose.btn.btn-outline-success(onclick="Actions.chooseArticle(event)", data-article_id=article._id, style="float: right;") Select
+
+    script TopicPage.init()

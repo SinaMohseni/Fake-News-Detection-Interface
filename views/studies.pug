@@ -1,0 +1,94 @@
+//- ----- Page 2: This page is to select from available studies ----- 
+
+extends layout
+
+block moreHead
+  script(src="js/landing.js")
+  //link( rel="stylesheet", href='/style/landing.css')
+  
+block content
+  .container(style="padding: 32px")
+    //-link(href='/style/landing.css', rel="stylesheet", type='text/css')
+    
+    h1.big-header(style="margin:64px;") Available Studies
+      p Each study utilizes a similar apparatus, but with a different variation of the task.
+            
+    //a.study-choice(href="begin/bestStudy")
+      div.left-line 
+      div.label
+        h2 'Only The Best' Study
+        p Choose the best news article for a set of news stories.
+                
+    //- a.study-choice(href="/begin/curatorStudy")
+    //-   div.left-line 
+    //-   div.label
+    //-     //- h2 'Convincing Articles' Study
+    //-     //- p Choose a small set of articles which could help convince someone that a news story is true or fake.
+  
+    a.study-choice(href="/begin/trueNewsSelectionStudy")
+      div.left-line 
+      div.label
+        h2 'True News Selection' Study
+        p Review multiple news stories and select articles to share 12 true stories in social media.
+    //- href="/begin/fakeNewsSelectionStudy"
+    //- a.study-choice()  
+    //-   div.left-line 
+    //-   div.label
+    //-     h2 'Fake News Detection' Study
+    //-     p Review multiple news stories and each time decide if it is a Fake News or True News.
+
+    
+    //a.study-choice(href="/begin/allAvailable")
+      div.left-line 
+      div.label
+        h2 'All Explainations' Study
+        p Similar to the 'Convincing Articles' study, but there is only 1 condition, which has all the explanation available on demand.   
+
+    //a.study-choice(href="/begin/editorStudy")
+      div.left-line 
+      div.label
+        h2 'Picky Editor' Study
+        p Act as a picky newspaper editor. Your reporters have each written a story about different 
+          | news stories. You need to choose which one to publish.   
+    
+    //h3.sub-header Games
+    
+    //a.study-choice(href="/game/begin/trueOrFake/random")
+      div.left-line 
+      div.label
+        h3 True or Fake - Set Assistance
+        p Guess whether an article is true or false. 
+          | You'll be given a randomly chosen amount of assistance.
+        
+    //a.study-choice(href="/game/begin/trueOrFake/optional")
+      div.left-line 
+      div.label
+        h3 True or Fake - Pay for Assistance
+        p Guess whether an article is true or false. 
+          | You'll be able to see different amounts of assistance but you won't earn as many points.
+          
+    //a.study-choice(href="/game/begin/trueOrFake/free")
+      div.left-line 
+      div.label
+        h3 True or Fake - Free Assistance
+        p Guess whether an article is true or false. 
+          | You'll be able to see different amounts of assistance FOR FREE!
+        
+    //a.study-choice(href="/game/begin/twoFakesAndATrue/random")
+      div.left-line 
+      div.label
+        h3 2 Fakes and a Truth - Set Assistance
+        p Can you spot the true article mixed in with 2 fakes. 
+          | You'll be given a randomly chosen amount of assistance.
+          
+    //a.study-choice(href="/game/begin/twoFakesAndATrue/optional")
+      div.left-line 
+      div.label
+        h3 2 Fakes and a Truth - Optional Assistance
+        p Can you spot the true article mixed in with 2 fakes. 
+          | You'll be given a randomly chosen amount of assistance.
+    
+    //a(href="/random") Explorer a Random News Story
+    
+    .footer.debugging(style='bottom: 40px;')
+      a.butt.small-butt(href='/clearStudy') Clear Session (to start over)

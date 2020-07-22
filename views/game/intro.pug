@@ -1,0 +1,117 @@
+extends ../layout
+  
+block moreHead
+  script(src="/js/game.js")
+  link(href='/style/game.css', rel="stylesheet", type='text/css')  
+  
+block content
+
+  script.      
+    const taskRun = !{JSON.stringify(taskRun)};
+      
+  include gameTopBar.pug     
+  
+  #mainContent
+    h1 Welcome to the '#{title}' Study
+    .debugging-box Debugging stuff, please remove at some point
+      div Participant ID: #{taskRun.participant_id}
+      div Study Format: #{taskRun.studyType}
+      div Game Condition Order: #{taskRun.game_stats.condition}
+    
+    .intro-box #{description}
+    
+    #assistantDescriptions.lvl-one.hidden
+      h3.sub-header Your Assistants
+      p These assistants are here to help you identify whether a news story is true or false.
+      
+      .assistant.lvl-one.hidden(style="border-color: #24e4cb")        
+        .left
+          img(src='/img/Bob.svg' style="background: #24e4cb")
+        .right
+          h3 Alex
+          p Alex finds multiple articles about the news story and quickly reads over them.
+          table.ability
+            tr.header-row
+              td
+                h4 Abilities
+              td
+                .cost.hidden Cost
+            tr
+              td.description He can tell you how relevant he thinks a particular article is to the news story.
+              td.value.hidden 1 
+            tr
+              td.description He can tell you what He thinks are the most important sentences in the article.
+              td.value.hidden 1 
+            
+      .assistant.lvl-two.hidden(style="border-color: #e4248d")        
+        .left
+          img(src='/img/Alice.svg' style="background: #e4248d")
+        .right
+          h3 Beth
+          p Beth anlyzes the news story headline.          
+          table.ability
+            tr.header-row
+              td
+                h4 Abilities
+              td
+                .cost.hidden Cost
+            tr
+              td.description She can highlight what she thinks are the most important words from the news story. 
+              td.value.hidden 1 
+            
+      .assistant.lvl-two.hidden(style="border-color: #e0e424")        
+        .left
+          img(src='/img/chris.svg' style="background: #e0e424")
+        .right
+          h3 Chris
+          p Chris reads and analyzes the complete article.
+          table.ability
+            tr.header-row
+              td
+                h4 Abilities
+              td
+                .cost.hidden Cost
+            tr
+              td.description He can highlight what he things are the most important words from the article.
+              td.value.hidden 1 
+                  
+      .assistant.lvl-three.hidden(style="border-color: #2467e4")        
+        .left
+          img(src='/img/Doug.svg' style="background: #2467e4")
+        .right
+          h3 Doug
+          p Doug looks at how different aspects of the article and the news story relate to each other.
+          table.ability
+            tr.header-row
+              td
+                h4 Abilities
+              td
+                .cost.hidden Cost
+            tr
+              td.description He can tell you importance of aspects such as the article's source and the source of the news story.
+              td.value.hidden 1      
+          
+      .assistant.lvl-four.hidden(style="border-color: #4fbb43")        
+        .left
+          img(src='/img/emma.svg' style="background: #4fbb43")
+        .right
+          h3 Emma
+          p Emma looks at everyone's work and makes her own decision about whether the news story is true or false.
+          table.ability
+            tr.header-row
+              td
+                h4 Abilities
+              td
+                .cost.hidden Cost
+            tr
+              td.description She can tell you her guess as to whether the news story true or false.
+              td.value.hidden 2 
+            tr
+              td.description She can show how confident she is about her guess.
+              td.value.hidden 1
+            tr
+              td.description She can show you how much she trusts the other assitants' results.
+              td.value.hidden 1           
+          
+
+  script init()

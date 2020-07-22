@@ -1,0 +1,62 @@
+extends layout
+  
+block content  
+  #mainContent
+    //-link(href='/style/landing.css', rel="stylesheet", type='text/css')  
+    script.      
+      const TOPICDATA = !{JSON.stringify(topic)};
+
+    div.claim-id
+      h3 #{topic.claim_id}
+      
+    div.claim
+      h2 #{topic.claim}
+      
+    div.cred
+      span Credibility
+      p #{topic.credibility}
+      
+    div.origins
+      span Origins
+      p.maybe-too-big #{topic.origins}
+      
+    div.description
+      span Description
+      p.maybe-too-big #{topic.description}
+      
+    div.example
+      span Example
+      p.maybe-too-big #{topic.example}
+        
+    div.face-check
+      span Fact Check
+      p.maybe-too-big #{topic.fact_check}
+
+    div.last-updated
+      span Last Updated
+      p #{topic.last_updated}
+      
+    div.originally-published
+      span Originally Published
+      p #{topic.originally_published}
+        
+    div.links
+      span Referred Links
+      each link in topic.referred_links
+        a(target='_blank' href=link)= link
+      
+    div.tags
+      span Tags
+      each tag in topic.tags
+        p= tag
+      
+    div.snopes-link
+      a(target='_blank' href='http://'+topic.url) Snopes Page
+      
+    div.articles
+      span Article Count
+      p #{topic.articles.length}
+      
+    div.nic-ok
+      span Nic Good
+      p #{topic.nicOK}

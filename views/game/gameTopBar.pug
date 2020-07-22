@@ -1,0 +1,11 @@
+#topBar
+  a(href="/")
+    img#logo(src='/img/news.png')
+    h1 X-Fake
+  div#progess Score: 
+    #sessionScore #{taskRun.score}
+  div#progess  
+    div Plays #{taskRun.game_stats.correct} / #{taskRun.game_stats.plays}
+  div(style="float:right; font-family: monospace") Debug -     
+    div Pariticipant ID #{taskRun.participant_id}
+    a.button(href='/clearStudy') Clear Study

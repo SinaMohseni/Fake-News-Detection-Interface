@@ -1,0 +1,114 @@
+//- ----- Page 7: This is the Article Inspect page  ----- 
+
+extends ../../layout
+  
+block moreHead
+  script(src="/js/Actions.js")
+  script(src="/js/Visuals.js")
+  script(src="/js/CuratorArticlePage.js")
+  link(href='/style/study.css', rel="stylesheet", type='text/css')  
+  
+block content
+  
+  script.      
+    const TOPICDATA = !{JSON.stringify(topic)};
+    const articleDATA = !{JSON.stringify(article)};
+    const taskRun = !{JSON.stringify(taskRun)};
+        
+  #mainContent.container(style="background: white; margin-top:0px;")
+    
+    a.mini-nav(href='/study/topic/'+topic.claim_id) Back to the Story
+      img(src='/img/baseline-arrow_back_ios-24px.svg')
+        
+    h4(style="text-align: center; font-weight:lighter; margin-top: 32px;") News Article
+    
+    #articleTop
+      h2#title.article-title.highlight-off #{article.title}
+    
+      div.domain
+        | By:
+        img(src="http://www.google.com/s2/favicons?domain="+article.domain)
+        div= article.domain
+          
+    div.explainies    
+      div.importances
+        // .article-explainable.hidden.lvl-two.open(data-articleId=article._id data-explainable='article importance' onclick="Visuals.toggleExplainable(event);" style="height: 64px;")
+        //   .header
+        //     .label How important is the article compared to the other articles?
+        //     .right-icon
+        //       img(src='/img/baseline-arrow_forward_ios-24px.svg')
+        //   .content
+        //     .centerer
+        //       .lil-box.fancy-number= article.article_relevance
+        //       .number-description.article-importance importance
+              
+        .article-explainable.hidden.lvl-three.tiny-info.closed(data-articleId=article._id data-explainable='article relevance' onclick="Visuals.toggleExplainable_artcle(event);")
+          .header
+            .label How relevant is the article?
+            .right-icon
+              img(src='/img/baseline-arrow_forward_ios-24px.svg')
+          .content
+            .centerer
+              .lil-box.fancy-number= article.importance.claim
+              .number-description.article-relevance relevant
+            
+        .article-explainable.hidden.lvl-three.tiny-info.closed(data-articleId=article._id data-explainable='article quality' onclick="Visuals.toggleExplainable_artcle(event);")
+          .header 
+            .label Is the article high quality?
+            .right-icon
+              img(src='/img/baseline-arrow_forward_ios-24px.svg')
+          .content
+            .centerer
+              .lil-box.fancy-number= article.importance.article
+              .number-description.article-importance quality
+              
+        .article-explainable.hidden.lvl-three.tiny-info.closed(data-articleId=article._id data-explainable='source credibility' onclick="Visuals.toggleExplainable_artcle(event);")
+          .header
+            .label How credible is the source?
+            .right-icon
+              img(src='/img/baseline-arrow_forward_ios-24px.svg')
+          .content              
+            .centerer
+              .lil-box.fancy-number= article.importance.article_source
+              .number-description.source-credibility credibility
+            
+        .article-explainable.hidden.lvl-three.tiny-info.closed(data-articleId=article._id data-explainable='source relevance' onclick="Visuals.toggleExplainable_artcle(event);")
+          .header
+            .label How relevant is the source to this news story?
+            .right-icon
+              img(src='/img/baseline-arrow_forward_ios-24px.svg')
+          .content
+            .centerer
+              .lil-box.fancy-number= article.importance.claim_source
+              .number-description.source-relevance relevant
+                  
+      #topSentences.explainable.hidden.lvl-two.closed.toggle-butt(onclick="ArticlePage.toggleTopSentences();" style="border-radius: 4px; display: block; width: -webkit-fill-available; text-align: center;")
+        .header
+          .label(style="text-align: center;") Top Sentences
+          .right-icon
+            img(src="/img/baseline-keyboard_arrow_down-24px.svg")
+        .content
+          each sentence in article.top_sentences    
+            p= sentence
+            
+      #articleWords.explainable.hidden.lvl-three.toggle-butt.off(onclick="ArticlePage.toggleArticleWords();" style='flex: 0.8;')
+        .header
+          div.left-switch
+            label.switch
+              input#articleWordsSwitch(type="checkbox")
+              span.slider.round
+          div.right-label  Show key words in the article
+        
+      div.choose.btn.btn-outline-success(onclick="Actions.chooseArticle(event)", data-article_id=article._id, style="center; margin: auto; width: 80px; display: block;") Select
+
+    
+    .article-img
+      if (article.unfluffed && article.unfluffed.image) 
+        img(src=article.unfluffed.image)
+        
+    .article-text
+      p#articleText.highlight-off 
+        //| #{article.text}
+
+
+  script ArticlePage.init()

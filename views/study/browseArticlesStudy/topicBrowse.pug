@@ -1,0 +1,52 @@
+extends ../layout
+  
+block content
+  link(href='/style/study.css', rel="stylesheet", type='text/css') 
+  script(src="/js/browseTopics.js")
+   
+  script.   
+    const TOPICS = !{JSON.stringify(topics)};
+    let taskRun = !{JSON.stringify(taskRun)};
+  include topbar.pug   
+    
+  #mainContent.container(style="background:white;")
+    h1(style="text-align: center;") News Stories
+    .info-text #{study.browseInfo}
+    
+    div.top-buttons(style='text-align: center')     
+      
+      a.butt.side-butt(href="/feed") See your selected articles
+      
+      #completeButton.butt.side-butt.complete-butt.hidden(onclick="attemptToFinish()") Complete task and submit your selections
+                
+      div #{taskRun.completionText}
+      br
+      div #{study.completionInfo}
+
+    #topicList    
+      each topic in topics
+        -var articleCount = topic.articles.length
+        a.topic-row(href='/study/topic/'+topic.claim_id data-id=topic._id)
+            div.left-line(data-claim=topic.claim_id)
+            div.circle(data-claim=topic.claim_id)
+              img(src='/img/baseline-search-24px.svg')
+              p.lil-circle-text ? of ?
+            div.topic-points
+              span.points= topic.editorial_score
+              span.under-label Reader Score
+            div.topic-info
+              h3= topic.claim
+              //div.last-updated
+                span From
+                div= topic.last_updated
+              // div.article-count
+                span Articles
+                div= articleCount
+              // div.cred
+                span Credibility
+                div= topic.credibility
+              div #{study.browseAction}
+              div.article-count
+                div #{study.articlesLabel}
+                div= articleCount
+  script init()

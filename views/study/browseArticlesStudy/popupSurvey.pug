@@ -1,0 +1,41 @@
+script(src="/js/survey.js")
+
+#popupSurvey.hidden
+  #curtain
+
+  #surveyBox
+    h3 Mini Survey
+    
+    div.intro-box
+        | Please answer these question to continue.
+          
+    div.questionnaire
+      p How's it going?
+      input(type="radio", name="going", value="great")
+      | Great
+      br
+      input(type="radio", name="going", value="ok")
+      | Ok
+      br      
+      input(type="radio", name="going", value="scared")
+      | I'm scared and confused
+      br
+        
+      br
+      p Why did you just select that article?
+      input(type="radio", name="why", value="good")
+      | It looks good
+      br
+      input(type="radio", name="why", value="guess")
+      | Educated guess
+      br
+      input(type="radio", name="why", value="dunno")
+      | I don't know
+      br
+      input(type="radio", name="why", value="testing")
+      | I'm just testing things
+      br
+          
+    div#surveyErrorMessage.error-message
+    div.butt.big-butt.good-butt(onclick="submitSurvey()") Submit
+    

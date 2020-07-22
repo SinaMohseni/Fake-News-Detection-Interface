@@ -1,0 +1,96 @@
+//- ----- Page 3: This is the Information sheet  ----- 
+
+extends ../layout
+
+block content    
+  script.
+    function URL_ID()
+    {
+          document.getElementById('next-page').href = "/study/consent/god"
+    }
+    
+  .container(style="padding: 32px;")
+    h1.big-header Information Sheet
+
+    h3 Project Title: Explainable deep learning visualization
+
+    h3 Principal Investigator: Xia “Ben” Hu, Ph.D.
+
+    h3 Introduction
+    p You are invited to take part in a research study being conducted by a research team from Texas
+      | A&M University. The information in this form is provided to help you decide whether or not to
+      | take part. If you decide you do not want to participate, there will be no penalty to you, and you
+      | will not lose any benefits you normally would have.
+
+    h3 Why is this study being done?
+    p The purpose of this study how well different interface designs and models explain data analytics 
+      | systems used for data analysis.
+    
+    h3 Why am I being asked to be in this study?
+    p Participants are needed to help us learn about data analysis software and interfaces. You are
+      | being asked to be in this study because you expressed interest in participation by looking at the
+      | advertisement in Mechanical Turk.
+    
+    h3 What are the alternatives to being in this study?
+    P The alternative to being in the study is not to participate.
+    
+    h3 What will I be asked to do in this study?
+    p The duration of this study is up to one hour. You will be asked to complete a background 
+      | questionnaire about yourself. We will then explain a data analysis activity and demonstrate how
+      | to use the analysis software. Next, you will conduct a data analysis session and we will collect
+      | the results of your analysis. Lastly, we will ask questions about your approach and experience in
+      | a questionnaire.
+    
+    h3 Are there any risks to me?
+    p The risks associated with this study are minimal, and are not greater than risks ordinarily 
+      | encountered with daily computer use. You do not have to answer anything you do not want to,
+      | and you can stop at any time without penalty. The recorded results of your use with the software
+      | during the analysis activity will be saved and made publicly available online, but this data will
+      | not include any of your personal information. No photos, audio recordings, or video recordings
+      | of you will be collected or shared.
+    
+    h3 Will there be any costs to me?
+    p Aside from your time; there are no costs for taking part in the study.
+    
+    h3 Will I be paid to be in this study?
+    p Yes. You will be paid up to $10.00 of compensation if it takes one hour to complete the study.
+    
+    h3 Who will know about my participation in this research study?
+    p Information about you will be kept confidential and not shared with others. Only the approved 
+      | members of the research team will have access to the information collected during your
+      | participation. In addition, representatives of regulatory agencies such as the Office of Human
+      | Research Protections (OHRP) and entities such as the Texas A&M University Human Subjects
+      | Protection Program may access your records to make sure the study is being run correctly and
+      | that information is collected and secured properly. We are not collecting your name or other Personal Identifier Information,
+      | only your Mechanical Turk ID number.
+    
+    p This is a Department of Defense Funded effort, and as such, protocol information including
+      | information about participant health, especially in case of injury or reports of non-compliance,
+      | will be shared with Department of the Navy Human Research Protection Program (DON-HRP)
+      | and SSC-Pacific Human Research Protection Office (SSCPAC HRPO). Don-HRPP and SSC
+      | Pacific HRPO have regulatory oversight responsibilities that require them to ensure that funded
+      | research is being conducted in accordance with Federal/DoD policy and that rights of the subject
+      | are being protected, and as such, the PI will share information with these entities, if requested.
+      | Information about you will not be shared with others.
+    
+    h3 Whom do I contact with questions about the research?
+    p If you have questions regarding this study, you may contact the Principal Investigator (PI) of the
+      | study, Xia “Ben” Hu (hu@cse.tamu.edu) or the study contact, Sina Mohseni (sina.mohseni@tamu.edu).
+    
+    h3 Whom do I contact about my rights as a research participant?
+    p For questions about your rights as a research participant; or if you have questions, complaints, or
+      | concerns about the research, you may contact the Texas A&M University Human Subjects
+      | Protection Program at 979.458.4067, toll-free at 1.855.795.8636, or email at irb@tamu.edu
+    
+    h3 Consent
+    p Please be sure you have read the above information, asked questions, and received answers to
+      | your satisfaction. By signing this document, you are indicating that you are at least 18 years of
+      | age and you consent to participate in this study and have your data collected and used for research
+      | purposes.
+      
+    // h3 Accept this HIT on Mechanical Turk to indicate consent.
+    br
+    .centered
+      a.btn.btn-danger.outline(href="/clearStudy" style="font-size:24px;") Decline
+      a.btn.btn-success(onclick="URL_ID()" id='next-page' style="margin-left: 82px; font-size:24px;") Accept
+

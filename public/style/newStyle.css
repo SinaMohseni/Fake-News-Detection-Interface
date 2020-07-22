@@ -1,0 +1,292 @@
+html, body {
+  margin: 0px;
+  padding: 0px;
+  width: 100%;
+  min-height: 100%;
+}
+
+#topBar {
+  color: white;
+  background: #1866a6;
+  height: 72px;
+  overflow: hidden;
+  width: 100%;
+  vertical-align: middle;
+  box-shadow: 0px -2px 8px 2px #9696a2;
+  position:fixed;
+  top: 0px;
+  z-index: 10;
+}
+
+#mainContent {
+  margin: auto;
+  width: 100%;
+  padding: 16px;
+  margin-top: 72px;
+  margin-bottom: 40px;
+}
+
+#footer {
+  background: lightgray;
+  height: 48px;
+  overflow: hidden;
+  width: 100%;
+  vertical-align: middle;
+  position:fixed;
+  bottom: 0px;
+  z-index: 10;
+  text-align: center;
+}
+
+.centered {
+  margin:auto;
+  height: 100%;
+  width: fit-content;
+}
+
+.big-background-img {
+  padding: 0px;
+margin: 0px;
+width: 100%;
+height: 600px;
+object-fit: cover;
+opacity: 0.5;
+background: black;
+}
+
+.header-on-img {
+  background: #18161373;
+      color: white;
+      position: absolute;
+      top: 25%;
+      left: 12%;
+      border-radius: 2px;
+      padding: 16px;
+}
+
+.img-on-img {
+  background: white;
+      color: white;
+      position: absolute;
+      top: 38%;
+      right: 14%;
+      border-radius: 2px;
+      padding: 7px;
+      width: 400px;
+}
+
+.img-on-img img {
+  width: 100%;
+}
+
+#topBar #logo {
+  height: 100%;
+  padding: 8px;
+}
+
+#topBar h1 {
+  display: inline;
+  vertical-align: middle;
+}
+
+#topBar a {
+  color: white;
+padding: 16px;
+font-size: 24px;
+vertical-align: middle;
+}
+
+.big-header {
+  font-size: 5vw;
+  font-weight: bold;
+  text-align: center;
+  border-bottom: 2px solid #248ee4;
+  margin-bottom: 32px;
+  padding-bottom: 12px;
+}
+
+h1 p {
+  font-size: 18px;
+  font-weight: lighter;
+  margin-top: 0.5em;
+  margin-bottom: 0em;
+}
+
+.study-choice  {
+  border: none;
+  margin: 24px;
+  /* padding: 8px 0px; */
+  transition: all 0.1s ease-in-out;
+  text-decoration: none;
+  /* border-left: 4px solid #248ee4; */
+  color: #292b3c;
+  white-space: normal;
+  /* text-indent: -24px; */
+  /* position: relative; */
+  display: block;
+  position: relative;
+  vertical-align: middle;
+  width: 72%;
+  border-radius: 4px;
+  margin: auto;
+  margin-bottom: 24px;
+}
+
+.study-choice:hover {
+  cursor: pointer;
+  background: #eff8ff;
+}
+
+.left-line {
+  background: #248ee4;
+  width: 8px;
+  height: 100%;
+  display: inline-block;
+  position: absolute;
+  left: 0px;
+  transition: all 0.1s ease-in-out;
+}
+
+.study-choice p {
+  font-size: 16px;
+  padding-left: 48px;
+  white-space: normal;
+  margin-top: 12px;
+  margin-bottom: 0px;
+  text-indent: -24px;
+}
+
+.study-choice:hover .left-line {
+  width: 24px;
+}
+
+.label {
+  display: inline-block;
+  position: relative;
+  left: 32px;
+  vertical-align: middle;
+  width: calc(100% - 80px);
+  padding: 12px 0px;
+}
+
+.label h3 {
+  font-size: 24px;
+    font-weight: lighter;
+    margin: 0px;
+}
+
+.footer {
+  text-align: center;
+  color: #666666;
+}
+
+.hidden {
+  visibility: hidden;
+  display: none;
+}
+
+.form-group {
+      padding: 16px;
+}
+
+#articleList {
+  margin: -8px;
+}
+.article-box {
+  display: inline-block;
+  width: calc(100% - 54px);
+  height: auto;
+  overflow: hidden;
+  border: solid 1px lightgray;
+  border-left: 1px solid lightgray;
+  margin: 12px;
+  padding: 12px;
+  border-radius: 3px;
+  color: #292b3c;
+}
+
+@media (min-width: 1200px) {
+  .article-box {
+    width: calc(50% - 54px);
+  }
+}
+
+.article-box.selected {
+  border-color: #4CAF50;
+  border-width: 1px;
+  background: #ebf9ec;
+}
+
+.article-box h3 {
+  display: block;
+  font-size: 20px;
+  margin: 0px;
+  overflow: hidden;
+  white-space: normal;
+  text-overflow: ellipsis;
+  text-align: center;
+}
+
+.domain {
+  text-align: center;
+font-size: 17px;
+color: #39414a;
+margin: 8px;
+vertical-align: middle;
+font-style: italic;
+font-weight: lighter;
+}
+ .domain img {
+  width: 24px;
+      padding: 0px 6px;
+      vertical-align: bottom;
+}
+.domain div {
+  display: inline;
+  font-style: normal;
+}
+
+.btn:hover {
+  cursor: pointer;
+}
+
+.tutorial-img {
+  text-align: center;
+  max-width: 600px;
+  width: 60%;
+  margin: auto;
+  box-shadow: 0px 0px 8px 2px #eee;
+}
+
+iframe {
+  width: 100%;
+  height: 800px;
+}
+
+.debugging-box {
+  background: #e1d4ec;
+  margin: 24px;
+  padding: 12px;
+  font-size: 12px;
+  color: #444;
+  text-align: center;
+}
+
+.debugging-box div {
+  color: #444;
+  font-size: 14px;
+  text-align: left;
+  line-height: 20px;
+}
+
+.intro-box {
+  margin: 18px;
+  /* padding: 16px; */
+  /* border: solid 1px lightgray; */
+  text-indent: 40px;
+  line-height: 26px;
+}
+
+.btn.disabled {
+  pointer-events: none;
+}

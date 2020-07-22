@@ -1,0 +1,114 @@
+extends layout
+  
+block content
+  //-link(href='/style/landing.css', rel="stylesheet", type='text/css')  
+  script.      
+    const articleDATA = !{JSON.stringify(article)};
+    
+    function init()
+    {
+      window.addEventListener('keydown', handleKeyDown);
+      randomizeAllScores();
+    }
+        
+    function randomizeAllScores()
+    {
+      let red = [255, 0, 0];
+      let green = [0, 255, 0];
+      let scores = $(".lil-box");
+      for(let s of scores) {
+        let n = Math.floor(100 * Math.random());
+        s.textContent = n + '%';
+        color = interpolateColor(red, green, n / 100);
+        s.style.background = "rgb("+color[0]+", "+color[1]+","+color[2]+")";
+      }
+    }
+    
+    function interpolateColor(color1, color2, factor) {
+      if (arguments.length < 3) { factor = 0.5; }
+      var result = color1.slice();
+      for (var i=0;i<3;i++) {
+        result[i] = Math.round(result[i] + factor*(color2[i]-color1[i]));
+      }
+      return result;
+    }
+      
+    function handleKeyDown(e)
+    {
+      console.log(e.keyCode)
+      switch(e.keyCode)
+      {
+        case 39:
+        case 68: guessTrue();
+          break;
+          
+        case 37:
+        case 65: guessFalse();
+          break;
+      }
+    } 
+       
+    function guessTrue()
+    {
+      axios.post('/guess/', {
+          articleID: articleDATA._id,
+          guess: true
+        }
+      ).then(res => {
+        handleResult(res.data);
+      });  
+    }
+    
+    function guessFalse()
+    {
+      axios.post('/guess/', {
+          articleID: articleDATA._id,
+          guess: false
+        }
+      ).then(res => {
+        handleResult(res.data);
+      });  
+    }
+    
+    function handleResult(data)
+    {
+      console.log(data)
+    }
+    
+    function updateScore(n)
+    {
+      $('#feedCount').text(parseInt($('#feedCount').text()) + n)
+    }
+  
+  #scoreBar Score: 
+    #yourScore #{taskRun.score}
+  #gameOver Correct!
+    a.big-butt(href="/game") Next
+  #gameContent.article-content
+    #trueGuess(onclick="guessTrue()") True
+    #falseGuess(onclick="guessFalse()") False
+    h2#title.article-title #{article.title}
+    span(onmouseenter="showHighlights()", onmouseleave="hideHighlights()") Show Important Words
+    br
+    br
+    div.domain
+      span Source
+      div 
+        img(src="http://www.google.com/s2/favicons?domain="+article.domain)
+        | #{article.domain}
+    br
+    div.number Relevance       
+      div.relevanceScore.lil-box 58%
+    div.number Source Credibility     
+      div.sourceCredibilityScore.lil-box 16%
+    br  
+    if article.unfluffed.image
+      img.article-image(src=article.unfluffed.image)
+      br
+    p.article-text #{article.unfluffed.text}
+    br
+    br
+    //div.article-text
+      p.maybe-too-big #{article.text}
+
+  script init()
