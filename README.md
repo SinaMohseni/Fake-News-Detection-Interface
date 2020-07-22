@@ -1,4 +1,4 @@
-# XAI FakeNews (Phase II)
+# XAI Fake News Detection Interface
 
 - add short project description here -
 
@@ -48,11 +48,11 @@ expert: AI with all explanations
 And users are: 
 
 ```
-god: god-mode lets you easily review the interface 
+test: test-mode lets you easily review the interface 
 mturk: mturk-mode is the user ready mode for studies 
 ```
 
-E.g.: for god-mode go to: 
+E.g.: for test-mode go to: 
 
 ```
 http://localhost:4000/begin/trueNewsSelectionStudy?cond1=expert&cond2=expert&usr=god
