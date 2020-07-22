@@ -25,7 +25,7 @@
     "express-session": "^1.16.2",
     "jquery": "^3.3.1",
     "mongo-express": "^0.52.2",
-    "mongoose": "^5.5.6",
+    "mongoose": "^5.7.5",
     "pug": "^2.0.3",
     "recursive-readdir": "^2.2.2",
     "serve-favicon": "^2.5.0",
