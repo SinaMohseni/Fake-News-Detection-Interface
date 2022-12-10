@@ -21,7 +21,7 @@
     "body-parser": "^1.19.0",
     "config": "^2.0.1",
     "connect-mongo": "^2.0.3",
-    "express": "^4.16.3",
+    "express": "^4.17.3",
     "express-session": "^1.16.2",
     "jquery": "^3.3.1",
     "mongo-express": "^0.52.2",
